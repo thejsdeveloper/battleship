@@ -2,6 +2,7 @@ export type GameState =
   | "NONE"
   | "START"
   | "SET_UP"
+  | "TRANSFER"
   | "IN_PROGRESS"
   | "FINISH"
   | "RESET";
@@ -46,6 +47,7 @@ export type Fleet = {
 
 export type Player = {
   id: string;
+  name: string;
   state: PlayerState;
   grid: SquareType[];
   shots: Shot[];

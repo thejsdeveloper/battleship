@@ -3,6 +3,7 @@ import "./styles.css";
 type WelcomeScreenProps = {
   onClick: () => void;
 };
+
 export const WelcomeScreen = ({ onClick }: WelcomeScreenProps) => {
   return (
     <div className="welcome">

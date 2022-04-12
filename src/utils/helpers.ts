@@ -10,6 +10,7 @@ export const generatePlayers = (): Player[] => {
   return [
     {
       id: nanoid(),
+      name: "Player 1",
       state: "PLACING",
       grid: generateEmptyLayout(),
       shots: [],
@@ -20,6 +21,7 @@ export const generatePlayers = (): Player[] => {
     },
     {
       id: nanoid(),
+      name: "Player 2",
       state: "WAITING",
       grid: generateEmptyLayout(),
       shots: [],
