@@ -6,3 +6,9 @@ export type SquareType =
   | "sunk"
   | "forbidden"
   | "awaiting";
+
+export type Ship = {
+  name: string;
+  length: number;
+  placed: boolean | null;
+};

@@ -1,0 +1,13 @@
+.fleet {
+  margin: 1em 2em 2em 1em;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.fleet-title {
+  font-size: 22px;
+  text-transform: uppercase;
+  color: var(--primary);
+}

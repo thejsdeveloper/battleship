@@ -1,0 +1,51 @@
+.replica {
+  width: 150px;
+  height: 35px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--primary);
+  border-radius: 3px;
+  padding: 5px;
+  margin-top: var(--small-space);
+  cursor: pointer;
+}
+
+.replica:hover {
+  background-color: var(--primary);
+  opacity: 0.8;
+}
+
+.replica:active {
+  position: relative;
+  top: 1px;
+}
+
+.placing {
+  background-color: var(--primary-dark);
+}
+
+.placing:hover {
+  background-color: var(--primary-dark);
+  opacity: 0.8;
+}
+
+.title {
+  font-size: 14px;
+  text-transform: capitalize;
+  font-family: var(--regular);
+  color: var(--tertiary);
+}
+
+.tile {
+  display: flex;
+  flex-direction: row;
+}
+
+.ship-tile {
+  width: 14px;
+  height: 14px;
+  background-color: var(--pink-dark);
+  border: 1px solid var(--pink);
+}

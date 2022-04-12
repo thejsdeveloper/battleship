@@ -1,0 +1,20 @@
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.game-title {
+  font-size: 38px;
+  font-weight: bold;
+  font-family: var(--regular);
+  color: var(--primary-dark);
+}
+
+.game-view {
+  display: flex;
+  flex-direction: row;
+  margin-top: var(--small-space);
+}

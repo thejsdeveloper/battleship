@@ -1,8 +1,9 @@
 @import "./colors.css";
+@import url("https://fonts.googleapis.com/css2?family=Asul&family=Chivo:wght@300;400;700;900&family=Libre+Franklin&display=swap");
 
 :root {
-  /* --regular: "Libre Franklin", sans-serif;
-  --headlines: "Asul", sans-serif;
+  --regular: "Libre Franklin", sans-serif;
+  /*  --headlines: "Asul", sans-serif;
   --header: "Chivo", sans-serif; */
   --small-space: 1em;
   --medium-space: 2em;
@@ -29,7 +30,7 @@ body,
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  background-color: var(--tertiary);
+  background-color: #fff;
   height: 100%;
   padding: 20px;
   flex: 1;
