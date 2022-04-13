@@ -5,6 +5,7 @@ import { useAppState } from "../../state/appStateContext";
 import { WelcomeScreen } from "../../components/WelcomeScreen";
 import {
   play,
+  rotateShipDirection,
   selectShip,
   startGame,
   transferGame,
@@ -24,6 +25,7 @@ export const Games = () => {
     },
     opponent: { name: opponentName, id: opponentId, grid: opponentGrid },
     isDeviceTransferInProgress,
+    isInPlacingState,
   } = useAppState();
 
   const isGameInSetupState = gameState === "SET_UP";
@@ -45,10 +47,17 @@ export const Games = () => {
   };
 
   const handleGridOnhover = (position: Position) => {
-    if (gameState === "SET_UP") {
+    if (isInPlacingState) {
       dispatch(updateShipPosition(currentPlayerId, position));
     }
   };
+
+  const handleGridSingleClick = () => {
+    if (isInPlacingState) {
+      dispatch(rotateShipDirection(currentPlayerId));
+    }
+  };
+  const handleGridDoubleClick = () => {};
 
   if (gameState === "NONE") {
     return <WelcomeScreen onClick={handleStartGameClick} />;
@@ -71,7 +80,12 @@ export const Games = () => {
         <Fleet onShipSelect={handleShipSelect} />
         <div className="boardContainer">
           <h1>{currentPlayerName}</h1>
-          <Board squares={currentPlayerGrid} onHover={handleGridOnhover} />
+          <Board
+            squares={currentPlayerGrid}
+            onHover={handleGridOnhover}
+            onSingleClick={handleGridSingleClick}
+            onDoubleClick={handleGridDoubleClick}
+          />
           <button onClick={handleDoneClick}>Done</button>
         </div>
         <div className="boardContainer">

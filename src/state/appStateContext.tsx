@@ -1,12 +1,7 @@
 import { createContext, Dispatch, FC, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import { getPlayerById } from "../utils/arrayUtils";
-import {
-  canPlaceShip,
-  getCurrentPlayerGrid,
-  getOverhang,
-  placeInGrid,
-} from "../utils/helpers";
+import { getCurrentPlayerGrid } from "../utils/helpers";
 
 import { Action } from "./actions";
 import { appStateReducer } from "./appStateReducer";
@@ -26,6 +21,7 @@ type AppStateContextProps = {
   opponent: Pick<Player, "name" | "id" | "grid">;
   gameState: GameState;
   isDeviceTransferInProgress: boolean;
+  isInPlacingState: boolean;
   winner: Player | null;
   dispatch: Dispatch<Action>;
 };
@@ -49,6 +45,9 @@ export const AppStateProvider: FC = (props) => {
   const currentPlayer = getPlayerById(players, currentPlayerId) || players[0];
   const opponent = getPlayerById(players, opponentId) || players[1];
 
+  const isInPlacingState =
+    gameState === "SET_UP" && !!currentPlayer.fleet.selectedShip;
+
   const currentPlayerGrid = getCurrentPlayerGrid(currentPlayer, gameState);
   const opponentGrid = opponent?.grid;
 
@@ -69,6 +68,7 @@ export const AppStateProvider: FC = (props) => {
         gameState,
         winner,
         isDeviceTransferInProgress,
+        isInPlacingState,
       }}
       {...props}
     />

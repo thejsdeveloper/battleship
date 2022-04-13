@@ -81,5 +81,16 @@ export const appStateReducer = (
       }
       break;
     }
+
+    case "ROTATE_SHIP": {
+      const { playerId } = action.payload;
+      const currentPlayerIndex = findPlayerIndexById(draft.players, playerId);
+      const currentPlayer = draft.players[currentPlayerIndex];
+      const selectedShip = currentPlayer.fleet.selectedShip;
+      if (selectedShip !== null) {
+        selectedShip.direction = selectedShip.direction === "H" ? "V" : "H";
+      }
+      break;
+    }
   }
 };
