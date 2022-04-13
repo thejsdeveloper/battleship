@@ -1,6 +1,7 @@
 import {
   findPlayerIndexById,
   findShipIndexByName,
+  markShipAsPlaced,
   removeShip,
 } from "../utils/arrayUtils";
 import { generatePlayers, indexToCoords, markShot } from "../utils/helpers";
@@ -103,10 +104,14 @@ export const appStateReducer = (
       const currentPlayer = draft.players[currentPlayerIndex];
       const selectedShip = currentPlayer.fleet.selectedShip;
       if (selectedShip !== null) {
-        currentPlayer.fleet.ships = removeShip(
+        const shipIndex = findShipIndexByName(
           currentPlayer.fleet.ships,
           selectedShip.name
         );
+        currentPlayer.fleet.ships[shipIndex] = {
+          ...selectedShip,
+          placed: true,
+        };
       }
       currentPlayer.grid = grid;
       currentPlayer.fleet.selectedShip = null;

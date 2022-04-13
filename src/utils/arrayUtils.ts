@@ -20,5 +20,11 @@ export const findShipIndexByName = <TShip extends Ship>(
 export const removeShip = (ships: Ship[], shipName: string) =>
   ships.filter((ship) => ship.name !== shipName);
 
+export const markShipAsPlaced = (ships: Ship[], shipName: string): Ship[] =>
+  ships.map((ship) => ({
+    ...ship,
+    placed: ship.name === shipName,
+  }));
+
 export const filterOutShips = (grid: Grid) =>
   grid.map((cell) => (cell === "ship" ? "empty" : cell));

@@ -35,7 +35,8 @@ export const Games = () => {
 
   const { name: opponentName, id: opponentId, grid: opponentGrid } = opponent;
 
-  const currentPlayerFleet = currentPlayer?.fleet?.ships || [];
+  const currentPlayerFleet =
+    currentPlayer?.fleet?.ships.filter((ship) => ship.placed === false) || [];
 
   const isGameInSetupState = gameState === "SET_UP";
 
