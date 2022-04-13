@@ -2,8 +2,8 @@ import { createContext, Dispatch, FC, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 
 import { Action } from "./actions";
-import { AppState, appStateReducer } from "./appStateReducer";
-import { GameState, Player } from "./types";
+import { appStateReducer } from "./appStateReducer";
+import { AppState, GameState, Player } from "./types";
 
 const appData: AppState = {
   players: [],
@@ -15,14 +15,12 @@ const appData: AppState = {
 };
 
 type AppStateContextProps = {
-  currentPlayer: Player;
-  opponent: Player;
+  currentPlayer: Pick<Player, "name" | "id" | "grid">;
+  opponent: Pick<Player, "name" | "id" | "grid">;
   gameState: GameState;
   isDeviceTransferInProgress: boolean;
   winner: Player | null;
   dispatch: Dispatch<Action>;
-  //TODO: If not used remove
-  getPlayerById: (playerId: string) => Player | null;
 };
 
 const AppStateContext = createContext<AppStateContextProps>(
@@ -45,21 +43,26 @@ export const AppStateProvider: FC = (props) => {
     players.find((player) => player.id === currentPlayerId) || players[0];
   const opponent =
     players.find((player) => player.id === opponentId) || players[1];
-  //TODO: If not used remove
-  const getPlayerById = (playerId: string) => {
-    return players.find((player) => player.id === playerId) || null;
-  };
+
+  const currentPlayerGrid = currentPlayer?.grid;
+  const opponentGrid = opponent?.grid;
 
   return (
     <AppStateContext.Provider
       value={{
-        currentPlayer,
-        opponent,
+        currentPlayer: {
+          name: currentPlayer?.name,
+          id: currentPlayer?.id,
+          grid: currentPlayerGrid,
+        },
+        opponent: {
+          name: opponent?.name,
+          id: opponent?.id,
+          grid: opponentGrid,
+        },
         dispatch,
         gameState,
         winner,
-        //TODO: If not used remove
-        getPlayerById,
         isDeviceTransferInProgress,
       }}
       {...props}

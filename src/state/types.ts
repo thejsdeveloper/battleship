@@ -1,6 +1,15 @@
 export type GameState = "NONE" | "SET_UP" | "IN_PROGRESS" | "FINISH";
 export type PlayerState = "NONE" | "WAITING" | "READY" | "DONE" | "SHOT_TAKEN";
 
+export type AppState = {
+  players: Player[];
+  currentPlayerId: string | null;
+  opponentId: string | null;
+  gameState: GameState;
+  winner: Player | null;
+  isDeviceTransferInProgress: boolean;
+};
+
 export type SquareType =
   | "empty"
   | "ship"
@@ -37,11 +46,13 @@ export type Fleet = {
   selectedShip: Ship | null;
 };
 
+export type Grid = SquareType[];
+
 export type Player = {
   id: string;
   name: string;
   state: PlayerState;
-  grid: SquareType[];
+  grid: Grid;
   shots: Shot[];
   fleet: Fleet;
 };

@@ -1,16 +1,11 @@
 import { findPlayerIndexById, findShipIndexByName } from "../utils/arrayUtils";
-import { generatePlayers } from "../utils/helpers";
+import {
+  canPlaceShip,
+  generatePlayers,
+  getShipIndices,
+} from "../utils/helpers";
 import { Action } from "./actions";
-import { GameState, Player } from "./types";
-
-export type AppState = {
-  players: Player[];
-  gameState: GameState;
-  currentPlayerId: string | null;
-  opponentId: string | null;
-  winner: Player | null;
-  isDeviceTransferInProgress: boolean;
-};
+import { AppState, GameState, Player } from "./types";
 
 export const appStateReducer = (
   draft: AppState,
@@ -28,10 +23,10 @@ export const appStateReducer = (
     }
 
     case "PLAY": {
-      const { currentPlayer } = action.payload;
+      const { currentPlayerId } = action.payload;
       const currentPlayerIndex = findPlayerIndexById(
         draft.players,
-        currentPlayer.id
+        currentPlayerId
       );
       draft.isDeviceTransferInProgress = false;
       draft.players[currentPlayerIndex].state = "READY";
@@ -39,20 +34,21 @@ export const appStateReducer = (
     }
 
     case "TRANSFER_DEVICE": {
-      const { currentPlayer, nextPlayer } = action.payload;
+      const { currentPlayerId, nextPlayerId } = action.payload;
 
       const currentPlayerIndex = findPlayerIndexById(
         draft.players,
-        currentPlayer.id
+        currentPlayerId
       );
 
-      const nextPlayerIndex = findPlayerIndexById(draft.players, nextPlayer.id);
+      const nextPlayerIndex = findPlayerIndexById(draft.players, nextPlayerId);
+      const nextPlayer = draft.players[nextPlayerIndex];
 
       draft.players[currentPlayerIndex].state = "DONE";
       draft.players[nextPlayerIndex].state = "WAITING";
       draft.isDeviceTransferInProgress = true;
-      draft.currentPlayerId = nextPlayer.id;
-      draft.opponentId = currentPlayer.id;
+      draft.currentPlayerId = nextPlayerId;
+      draft.opponentId = currentPlayerId;
 
       const hasNextPlayerPlacedAllShips = nextPlayer.fleet.ships.length === 0;
 
@@ -75,6 +71,27 @@ export const appStateReducer = (
       const selectedShip = currentPlayer.fleet.ships[selectedShipIndex];
 
       currentPlayer.fleet.selectedShip = selectedShip;
+      break;
+    }
+
+    case "PLACE_SHIP": {
+      const { playerId, position } = action.payload;
+
+      const currentPlayerIndex = findPlayerIndexById(draft.players, playerId);
+      const currentPlayer = draft.players[currentPlayerIndex];
+      const selectedShip = currentPlayer.fleet.selectedShip;
+      const grid = currentPlayer.grid;
+
+      if (selectedShip) {
+        selectedShip.position = position;
+        if (canPlaceShip(selectedShip, grid)) {
+          getShipIndices(selectedShip).forEach(
+            (index) => (grid[index] = "ship")
+          );
+        }
+      }
+
+      // draft.players[currentPlayerIndex].grid = grid;
       break;
     }
   }

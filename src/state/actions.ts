@@ -1,4 +1,4 @@
-import { Player } from "./types";
+import { Player, Position } from "./types";
 
 export type Action =
   | {
@@ -7,19 +7,26 @@ export type Action =
   | {
       type: "PLAY";
       payload: {
-        currentPlayer: Player;
+        currentPlayerId: string;
       };
     }
   | {
       type: "TRANSFER_DEVICE";
       payload: {
-        currentPlayer: Player;
-        nextPlayer: Player;
+        currentPlayerId: string;
+        nextPlayerId: string;
       };
     }
   | {
       type: "SELECT_SHIP";
       payload: { shipName: string; playerId: string };
+    }
+  | {
+      type: "PLACE_SHIP";
+      payload: {
+        playerId: string;
+        position: Position;
+      };
     };
 
 export const startGame = (): Action => {
@@ -28,22 +35,22 @@ export const startGame = (): Action => {
   };
 };
 
-export const play = (currentPlayer: Player): Action => {
+export const play = (currentPlayerId: string): Action => {
   return {
     type: "PLAY",
     payload: {
-      currentPlayer,
+      currentPlayerId,
     },
   };
 };
 
 export const transferGame = (
-  currentPlayer: Player,
-  nextPlayer: Player
+  currentPlayerId: string,
+  nextPlayerId: string
 ): Action => {
   return {
     type: "TRANSFER_DEVICE",
-    payload: { currentPlayer, nextPlayer },
+    payload: { currentPlayerId, nextPlayerId },
   };
 };
 
@@ -51,5 +58,15 @@ export const selectShip = (playerId: string, shipName: string): Action => {
   return {
     type: "SELECT_SHIP",
     payload: { shipName, playerId },
+  };
+};
+
+export const placeShip = (playerId: string, position: Position): Action => {
+  return {
+    type: "PLACE_SHIP",
+    payload: {
+      playerId,
+      position,
+    },
   };
 };

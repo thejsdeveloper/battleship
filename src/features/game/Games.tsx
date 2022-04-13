@@ -1,23 +1,31 @@
 import "./styles.css";
 import { Board } from "../../components/Board";
-import { generateEmptyLayout } from "../../utils/helpers";
 import Fleet from "../../components/Fleet/Fleet";
 import { useAppState } from "../../state/appStateContext";
 import { WelcomeScreen } from "../../components/WelcomeScreen";
-import { play, selectShip, startGame, transferGame } from "../../state/actions";
+import {
+  placeShip,
+  play,
+  selectShip,
+  startGame,
+  transferGame,
+} from "../../state/actions";
 import { WaitingScreen } from "../../components/WaitingScreen";
+import { Position } from "../../state/types";
+import { canPlaceShip, getShipIndices } from "../../utils/helpers";
 
 export const Games = () => {
   const {
     gameState,
     dispatch,
-    currentPlayer,
-    opponent,
+    currentPlayer: {
+      name: currentPlayerName,
+      id: currentPlayerId,
+      grid: currentPlayerGrid,
+    },
+    opponent: { name: opponentName, id: opponentId, grid: opponentGrid },
     isDeviceTransferInProgress,
   } = useAppState();
-
-  const currentPlayerGrid = currentPlayer.grid;
-  const opponentGrid = opponent.grid;
 
   const isGameInSetupState = gameState === "SET_UP";
 
@@ -26,15 +34,35 @@ export const Games = () => {
   };
 
   const handleOnReady = () => {
-    dispatch(play(currentPlayer));
+    dispatch(play(currentPlayerId));
   };
 
   const handleDoneClick = () => {
-    dispatch(transferGame(currentPlayer, opponent));
+    dispatch(transferGame(currentPlayerId, opponentId));
   };
 
   const handleShipSelect = (shipName: string) => {
-    dispatch(selectShip(currentPlayer.id, shipName));
+    dispatch(selectShip(currentPlayerId, shipName));
+  };
+
+  const handleGridOnhover = (position: Position) => {
+    if (gameState === "SET_UP") {
+      // dispatch(placeShip(currentPlayer.id, position))
+      // const currentPlayerIndex = findPlayerIndexById(draft.players, playerId);
+      // const currentPlayer = draft.players[currentPlayerIndex];
+      // const selectedShip = currentPlayer.fleet.selectedShip;
+      // const grid = currentPlayer.grid.slice();
+      // if (selectedShip) {
+      //   const ship = {
+      //     ...selectedShip,
+      //     position,
+      //   };
+      //   if (canPlaceShip(ship, currentPlayerGrid)) {
+      //     getShipIndices(ship).forEach((index) => (grid[index] = "ship"));
+      //     currentPlayerGrid = grid;
+      //   }
+      // }
+    }
   };
 
   if (gameState === "NONE") {
@@ -44,7 +72,7 @@ export const Games = () => {
   if (isDeviceTransferInProgress) {
     return (
       <WaitingScreen
-        nextPlayer={currentPlayer.name}
+        nextPlayer={currentPlayerName}
         onReadyClick={handleOnReady}
         isSetUPState={isGameInSetupState}
       />
@@ -57,12 +85,12 @@ export const Games = () => {
       <div className="game-view">
         <Fleet onShipSelect={handleShipSelect} />
         <div className="boardContainer">
-          <h1>{currentPlayer.name}</h1>
-          <Board squares={currentPlayerGrid} />
+          <h1>{currentPlayerName}</h1>
+          <Board squares={currentPlayerGrid} onHover={handleGridOnhover} />
           <button onClick={handleDoneClick}>Done</button>
         </div>
         <div className="boardContainer">
-          <h1>{opponent.name}</h1>
+          <h1>{opponentName}</h1>
           <Board squares={opponentGrid} />
         </div>
       </div>
