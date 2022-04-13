@@ -1,11 +1,7 @@
 import { createContext, Dispatch, FC, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import { filterOutShips, getPlayerById } from "../utils/arrayUtils";
-import {
-  canPlaceShip,
-  getCurrentPlayerGrid,
-  getWinner,
-} from "../utils/helpers";
+import { canPlaceShip, getCurrentPlayerGrid } from "../utils/helpers";
 
 import { Action } from "./actions";
 import { appStateReducer } from "./appStateReducer";
