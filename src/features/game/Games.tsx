@@ -6,6 +6,7 @@ import { WelcomeScreen } from "../../components/WelcomeScreen";
 import {
   placeShip,
   play,
+  resetGame,
   rotateShipDirection,
   selectShip,
   shootTarpido,
@@ -16,6 +17,7 @@ import {
 import { WaitingScreen } from "../../components/WaitingScreen";
 import { Position } from "../../state/types";
 import { getDoneDisabled } from "../../utils/helpers";
+import { WinnerScreen } from "../../components/WinnerScreen";
 
 export const Games = () => {
   const {
@@ -26,6 +28,7 @@ export const Games = () => {
     isDeviceTransferInProgress,
     isInPlacingState,
     isValidPlacement,
+    winner,
   } = useAppState();
 
   const {
@@ -88,6 +91,14 @@ export const Games = () => {
       dispatch(placeShip(currentPlayerId, currentPlayerGrid));
     }
   };
+
+  const handleReset = () => {
+    dispatch(resetGame());
+  };
+
+  if (gameState === "FINISH" && winner !== null) {
+    return <WinnerScreen onReset={handleReset} winner={winner} />;
+  }
 
   if (gameState === "NONE") {
     return <WelcomeScreen onClick={handleStartGameClick} />;

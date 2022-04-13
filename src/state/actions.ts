@@ -48,6 +48,9 @@ export type Action =
         opponentId: string;
         index: number;
       };
+    }
+  | {
+      type: "RESET";
     };
 
 export const startGame = (): Action => {
@@ -126,5 +129,11 @@ export const shootTarpido = (
       opponentId,
       index,
     },
+  };
+};
+
+export const resetGame = (): Action => {
+  return {
+    type: "RESET",
   };
 };

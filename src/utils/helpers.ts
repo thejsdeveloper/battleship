@@ -190,6 +190,25 @@ export const getDoneDisabled = (
     (gameState === "SET_UP" &&
       currentPlayer?.fleet?.ships.filter((ship) => ship.placed === false)
         .length > 0) ||
-    (gameState === "IN_PROGRESS" && !(currentPlayer.state === "SHOT_TAKEN"))
+    (gameState === "IN_PROGRESS" && !(currentPlayer.state === "SHOT_TAKEN")) ||
+    gameState === "FINISH"
   );
+};
+
+export const getWinner = (
+  currentPlayer: Player,
+  opponent: Player
+): Player | null => {
+  const isOpponentWinner = currentPlayer.fleet.ships.every(
+    (ship) => ship.sunk === true
+  );
+  const isCurrentPlayerWinner = opponent.fleet.ships.every(
+    (ship) => ship.sunk === true
+  );
+
+  return isOpponentWinner
+    ? opponent
+    : isCurrentPlayerWinner
+    ? currentPlayer
+    : null;
 };

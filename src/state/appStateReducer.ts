@@ -2,6 +2,7 @@ import { findPlayerIndexById, findShipIndexByName } from "../utils/arrayUtils";
 import {
   generatePlayers,
   getSunkShips,
+  getWinner,
   indexToCoords,
   markShot,
 } from "../utils/helpers";
@@ -159,6 +160,12 @@ export const appStateReducer = (
         };
       });
 
+      const winner = getWinner(currentPlayer, opponent);
+      if (winner !== null) {
+        draft.winner = winner;
+        draft.gameState = "FINISH";
+      }
+
       /*
       if we want to show different color for sunken ships
       const sunkIndices = getSunkIndices(
@@ -169,6 +176,16 @@ export const appStateReducer = (
       sunkIndices.forEach((index) => (opponent.grid[index] = "sunk"));
       */
 
+      break;
+    }
+
+    case "RESET": {
+      const players = generatePlayers();
+      draft.players = players;
+      draft.currentPlayerId = players[0].id;
+      draft.opponentId = players[1].id;
+      draft.gameState = "NONE";
+      draft.isDeviceTransferInProgress = false;
       break;
     }
   }
