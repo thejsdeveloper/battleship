@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { AVAILABLE_SHIPS } from "../../constants";
 import { Ship } from "../../state/types";
 import { ShipReplica } from "../ShipReplica";
 
