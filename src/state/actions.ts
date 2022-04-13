@@ -5,6 +5,12 @@ export type Action =
       type: "START_GAME";
     }
   | {
+      type: "PLAY";
+      payload: {
+        currentPlayer: Player;
+      };
+    }
+  | {
       type: "TRANSFER_DEVICE";
       payload: {
         currentPlayer: Player;
@@ -19,6 +25,15 @@ export type Action =
 export const startGame = (): Action => {
   return {
     type: "START_GAME",
+  };
+};
+
+export const play = (currentPlayer: Player): Action => {
+  return {
+    type: "PLAY",
+    payload: {
+      currentPlayer,
+    },
   };
 };
 

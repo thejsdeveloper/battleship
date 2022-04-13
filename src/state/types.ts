@@ -1,11 +1,5 @@
-export type GameState =
-  | "NONE"
-  | "START"
-  | "SET_UP"
-  | "TRANSFER"
-  | "IN_PROGRESS"
-  | "FINISH"
-  | "RESET";
+export type GameState = "NONE" | "SET_UP" | "IN_PROGRESS" | "FINISH";
+export type PlayerState = "NONE" | "WAITING" | "READY" | "DONE" | "SHOT_TAKEN";
 
 export type SquareType =
   | "empty"
@@ -15,8 +9,6 @@ export type SquareType =
   | "sunk"
   | "forbidden"
   | "awaiting";
-
-export type PlayerState = "NONE" | "PLACING" | "WAITING" | "READY" | "DONE";
 
 export type ShipDirection = "H" | "V";
 

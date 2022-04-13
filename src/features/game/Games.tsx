@@ -4,7 +4,7 @@ import { generateEmptyLayout } from "../../utils/helpers";
 import Fleet from "../../components/Fleet/Fleet";
 import { useAppState } from "../../state/appStateContext";
 import { WelcomeScreen } from "../../components/WelcomeScreen";
-import { startGame, transferGame } from "../../state/actions";
+import { play, startGame, transferGame } from "../../state/actions";
 import { WaitingScreen } from "../../components/WaitingScreen";
 
 export const Games = () => {
@@ -18,11 +18,15 @@ export const Games = () => {
     isDeviceTransferInProgress,
   } = useAppState();
 
+  const isGameInSetupState = gameState === "SET_UP";
+
   const handleStartGameClick = () => {
     dispatch(startGame());
   };
 
-  const handleOnReady = () => {};
+  const handleOnReady = () => {
+    dispatch(play(currentPlayer));
+  };
 
   const handleDoneClick = () => {
     dispatch(transferGame(currentPlayer, opponent));
@@ -37,6 +41,7 @@ export const Games = () => {
       <WaitingScreen
         nextPlayer={currentPlayer.name}
         onReadyClick={handleOnReady}
+        isSetUPState={isGameInSetupState}
       />
     );
   }

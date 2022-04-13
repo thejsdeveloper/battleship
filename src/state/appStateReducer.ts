@@ -23,8 +23,21 @@ export const appStateReducer = (
       draft.currentPlayerId = players[0].id;
       draft.opponentId = players[1].id;
       draft.gameState = "SET_UP";
+      draft.isDeviceTransferInProgress = true;
       break;
     }
+
+    case "PLAY": {
+      const { currentPlayer } = action.payload;
+      const currentPlayerIndex = findPlayerIndexById(
+        draft.players,
+        currentPlayer.id
+      );
+      draft.isDeviceTransferInProgress = false;
+      draft.players[currentPlayerIndex].state = "READY";
+      break;
+    }
+
     case "TRANSFER_DEVICE": {
       const { currentPlayer, nextPlayer } = action.payload;
 
@@ -35,12 +48,17 @@ export const appStateReducer = (
 
       const nextPlayerIndex = findPlayerIndexById(draft.players, nextPlayer.id);
 
-      draft.players[currentPlayerIndex].state = "WAITING";
+      draft.players[currentPlayerIndex].state = "DONE";
       draft.players[nextPlayerIndex].state = "WAITING";
+      draft.isDeviceTransferInProgress = true;
       draft.currentPlayerId = nextPlayer.id;
       draft.opponentId = currentPlayer.id;
-      draft.isDeviceTransferInProgress = true;
 
+      const hasNextPlayerPlacedAllShips = nextPlayer.fleet.ships.length === 0;
+
+      if (draft.gameState === "SET_UP" && hasNextPlayerPlacedAllShips) {
+        draft.gameState = "IN_PROGRESS";
+      }
       break;
     }
   }

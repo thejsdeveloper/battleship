@@ -1,6 +1,5 @@
-import React, { createContext, Dispatch, FC, useContext } from "react";
+import { createContext, Dispatch, FC, useContext } from "react";
 import { useImmerReducer } from "use-immer";
-import { generatePlayers } from "../utils/helpers";
 
 import { Action } from "./actions";
 import { AppState, appStateReducer } from "./appStateReducer";
@@ -22,6 +21,7 @@ type AppStateContextProps = {
   isDeviceTransferInProgress: boolean;
   winner: Player | null;
   dispatch: Dispatch<Action>;
+  //TODO: If not used remove
   getPlayerById: (playerId: string) => Player | null;
 };
 
@@ -45,7 +45,7 @@ export const AppStateProvider: FC = (props) => {
     players.find((player) => player.id === currentPlayerId) || players[0];
   const opponent =
     players.find((player) => player.id === opponentId) || players[1];
-
+  //TODO: If not used remove
   const getPlayerById = (playerId: string) => {
     return players.find((player) => player.id === playerId) || null;
   };
@@ -58,6 +58,7 @@ export const AppStateProvider: FC = (props) => {
         dispatch,
         gameState,
         winner,
+        //TODO: If not used remove
         getPlayerById,
         isDeviceTransferInProgress,
       }}

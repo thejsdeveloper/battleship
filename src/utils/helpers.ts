@@ -11,7 +11,7 @@ export const generatePlayers = (): Player[] => {
     {
       id: nanoid(),
       name: "Player 1",
-      state: "PLACING",
+      state: "WAITING",
       grid: generateEmptyLayout(),
       shots: [],
       fleet: {
