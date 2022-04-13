@@ -13,8 +13,7 @@
 }
 
 .replica:hover {
-  background-color: var(--primary);
-  opacity: 0.8;
+  box-shadow: 0 5px 15px rgba(30, 163, 175, 0.4);
 }
 
 .replica:active {
@@ -24,11 +23,17 @@
 
 .placing {
   background-color: var(--primary-dark);
+  border-left: 0;
+  border-top: 0;
+  border-bottom: 2px solid var(--pink-dark);
+  border-right: 2px solid var(--pink-dark);
+  box-shadow: 0 5px 15px rgba(230, 158, 183, 0.4);
+  transform: scale(1.1);
 }
 
 .placing:hover {
   background-color: var(--primary-dark);
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .title {

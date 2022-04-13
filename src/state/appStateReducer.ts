@@ -1,4 +1,4 @@
-import { findPlayerIndexById } from "../utils/arrayUtils";
+import { findPlayerIndexById, findShipIndexByName } from "../utils/arrayUtils";
 import { generatePlayers } from "../utils/helpers";
 import { Action } from "./actions";
 import { GameState, Player } from "./types";
@@ -59,6 +59,22 @@ export const appStateReducer = (
       if (draft.gameState === "SET_UP" && hasNextPlayerPlacedAllShips) {
         draft.gameState = "IN_PROGRESS";
       }
+      break;
+    }
+
+    case "SELECT_SHIP": {
+      const { shipName, playerId } = action.payload;
+
+      const currentPlayerIndex = findPlayerIndexById(draft.players, playerId);
+      const currentPlayer = draft.players[currentPlayerIndex];
+
+      const selectedShipIndex = findShipIndexByName(
+        currentPlayer.fleet.ships,
+        shipName
+      );
+      const selectedShip = currentPlayer.fleet.ships[selectedShipIndex];
+
+      currentPlayer.fleet.selectedShip = selectedShip;
       break;
     }
   }

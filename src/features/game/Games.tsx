@@ -4,7 +4,7 @@ import { generateEmptyLayout } from "../../utils/helpers";
 import Fleet from "../../components/Fleet/Fleet";
 import { useAppState } from "../../state/appStateContext";
 import { WelcomeScreen } from "../../components/WelcomeScreen";
-import { play, startGame, transferGame } from "../../state/actions";
+import { play, selectShip, startGame, transferGame } from "../../state/actions";
 import { WaitingScreen } from "../../components/WaitingScreen";
 
 export const Games = () => {
@@ -32,6 +32,10 @@ export const Games = () => {
     dispatch(transferGame(currentPlayer, opponent));
   };
 
+  const handleShipSelect = (shipName: string) => {
+    dispatch(selectShip(currentPlayer.id, shipName));
+  };
+
   if (gameState === "NONE") {
     return <WelcomeScreen onClick={handleStartGameClick} />;
   }
@@ -50,7 +54,7 @@ export const Games = () => {
     <div className="game">
       <div className="game-title">Battleship</div>
       <div className="game-view">
-        <Fleet />
+        <Fleet onShipSelect={handleShipSelect} />
         <div className="boardContainer">
           <Board squares={squares} />
           <button onClick={handleDoneClick}>Done</button>

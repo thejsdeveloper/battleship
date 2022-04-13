@@ -1,4 +1,4 @@
-import { Player, Ship } from "./types";
+import { Player } from "./types";
 
 export type Action =
   | {
@@ -19,7 +19,7 @@ export type Action =
     }
   | {
       type: "SELECT_SHIP";
-      payload: { ship: Ship; playerId: number };
+      payload: { shipName: string; playerId: string };
     };
 
 export const startGame = (): Action => {
@@ -47,9 +47,9 @@ export const transferGame = (
   };
 };
 
-export const selectShip = (playerId: number, ship: Ship): Action => {
+export const selectShip = (playerId: string, shipName: string): Action => {
   return {
     type: "SELECT_SHIP",
-    payload: { ship, playerId },
+    payload: { shipName, playerId },
   };
 };
