@@ -37,7 +37,7 @@ export type Ship = {
 };
 
 export type Shot = {
-  pos: Position;
+  position: Position;
   type: SquareType;
 };
 

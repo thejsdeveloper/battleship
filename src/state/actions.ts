@@ -40,6 +40,14 @@ export type Action =
         playerId: string;
         grid: Grid;
       };
+    }
+  | {
+      type: "SHOOT";
+      payload: {
+        currentPlayerId: string;
+        opponentId: string;
+        index: number;
+      };
     };
 
 export const startGame = (): Action => {
@@ -102,6 +110,21 @@ export const placeShip = (playerId: string, grid: Grid): Action => {
     payload: {
       playerId,
       grid,
+    },
+  };
+};
+
+export const shootTarpido = (
+  currentPlayerId: string,
+  opponentId: string,
+  index: number
+): Action => {
+  return {
+    type: "SHOOT",
+    payload: {
+      currentPlayerId,
+      opponentId,
+      index,
     },
   };
 };

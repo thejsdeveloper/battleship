@@ -3,9 +3,9 @@ import {
   findShipIndexByName,
   removeShip,
 } from "../utils/arrayUtils";
-import { generatePlayers } from "../utils/helpers";
+import { generatePlayers, indexToCoords, markShot } from "../utils/helpers";
 import { Action } from "./actions";
-import { AppState } from "./types";
+import { AppState, Shot, SquareType } from "./types";
 
 export const appStateReducer = (
   draft: AppState,
@@ -110,6 +110,39 @@ export const appStateReducer = (
       }
       currentPlayer.grid = grid;
       currentPlayer.fleet.selectedShip = null;
+      break;
+    }
+
+    case "SHOOT": {
+      const { opponentId, index, currentPlayerId } = action.payload;
+      const currentPlayerIndex = findPlayerIndexById(
+        draft.players,
+        currentPlayerId
+      );
+      const currentPlayer = draft.players[currentPlayerIndex];
+
+      const opponentIndex = findPlayerIndexById(draft.players, opponentId);
+      const opponent = draft.players[opponentIndex];
+
+      const opponentGrid = opponent.grid;
+      let shotType: SquareType = "empty";
+
+      if (opponentGrid[index] === "ship") {
+        shotType = "hit";
+      } else if (opponentGrid[index] === "empty") {
+        shotType = "miss";
+      }
+
+      const shot: Shot = {
+        type: shotType,
+        position: indexToCoords(index),
+      };
+
+      opponent.grid = markShot(opponentGrid, shot);
+      currentPlayer.shots.push(shot);
+      currentPlayer.state = "SHOT_TAKEN";
+
+      break;
     }
   }
 };

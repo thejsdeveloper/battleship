@@ -8,6 +8,7 @@ import {
   play,
   rotateShipDirection,
   selectShip,
+  shootTarpido,
   startGame,
   transferGame,
   updateShipPosition,
@@ -38,6 +39,17 @@ export const Games = () => {
 
   const isGameInSetupState = gameState === "SET_UP";
 
+  const isGameInProgress = gameState === "IN_PROGRESS";
+
+  const isShotTakenByCurrentPlayer = currentPlayer.state === "SHOT_TAKEN";
+
+  const isDoneDisabled =
+    (isGameInSetupState && currentPlayer?.fleet?.ships.length > 0) ||
+    (isGameInProgress && !isShotTakenByCurrentPlayer);
+
+  const isShootAreaDisabled =
+    isGameInSetupState || (isGameInProgress && isShotTakenByCurrentPlayer);
+
   const handleStartGameClick = () => {
     dispatch(startGame());
   };
@@ -57,6 +69,12 @@ export const Games = () => {
   const handleGridOnhover = (position: Position) => {
     if (isInPlacingState) {
       dispatch(updateShipPosition(currentPlayerId, position));
+    }
+  };
+
+  const handleShoot = (index: number) => {
+    if (isGameInProgress && !isShootAreaDisabled) {
+      dispatch(shootTarpido(currentPlayerId, opponentId, index));
     }
   };
 
@@ -94,14 +112,19 @@ export const Games = () => {
         )}
         <Board
           isCurrentPlayer={true}
+          disableDone={isDoneDisabled}
           playerName={currentPlayerName}
           squares={currentPlayerGrid}
           onHover={handleGridOnhover}
-          onSingleClick={handleGridSingleClick}
+          onSingleClick={() => handleGridSingleClick()}
           onDoubleClick={handleGridDoubleClick}
           onDoneClick={handleDoneClick}
         />
-        <Board playerName={opponentName} squares={opponentGrid} />
+        <Board
+          playerName={opponentName}
+          squares={opponentGrid}
+          onSingleClick={handleShoot}
+        />
       </div>
     </div>
   );

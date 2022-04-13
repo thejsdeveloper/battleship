@@ -4,11 +4,12 @@ import { GridCell } from "../GridCell";
 import "./boardStyles.css";
 
 type BoardProps = {
-  isCurrentPlayer?: boolean;
   playerName: string;
   squares: SquareType[];
+  isCurrentPlayer?: boolean;
+  disableDone?: boolean;
   onHover?: (position: Position) => void;
-  onSingleClick?: () => void;
+  onSingleClick?: (index: number) => void;
   onDoubleClick?: () => void;
   onDoneClick?: () => void;
 };
@@ -21,6 +22,7 @@ export const Board = ({
   playerName,
   onDoneClick,
   isCurrentPlayer = false,
+  disableDone = true,
 }: BoardProps) => {
   const handleMouseOver = (index: number) => {
     const position = indexToCoords(index);
@@ -31,8 +33,8 @@ export const Board = ({
     onDoubleClick?.();
   };
 
-  const handleSingleClick = () => {
-    onSingleClick?.();
+  const handleSingleClick = (index: number) => {
+    onSingleClick?.(index);
   };
 
   return (
@@ -46,12 +48,16 @@ export const Board = ({
               square={square}
               onHover={() => handleMouseOver(index)}
               onDoubleClick={handleDoubleClick}
-              onSingleClick={handleSingleClick}
+              onSingleClick={() => handleSingleClick(index)}
             />
           );
         })}
       </div>
-      {isCurrentPlayer && <button onClick={onDoneClick}>Done</button>}
+      {isCurrentPlayer && (
+        <button onClick={onDoneClick} disabled={disableDone}>
+          Done
+        </button>
+      )}
     </div>
   );
 };

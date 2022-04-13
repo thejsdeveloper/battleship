@@ -4,6 +4,7 @@ import {
   Player,
   Position,
   Ship,
+  Shot,
   SquareType,
 } from "../state/types";
 import { nanoid } from "nanoid";
@@ -125,6 +126,12 @@ export const placeInGrid = (grid: Grid, ship: Ship, type: SquareType) => {
   return grid;
 };
 
+export const markShot = (grid: Grid, shot: Shot) => {
+  const newGrid = grid.slice();
+  newGrid[coordsToIndex(shot.position)] = shot.type;
+  return newGrid;
+};
+
 export const getCurrentPlayerGrid = (
   currentPlayer: Player,
   gameState: GameState
@@ -148,6 +155,5 @@ export const getCurrentPlayerGrid = (
       );
     }
   }
-
   return currentPlayerGrid;
 };
