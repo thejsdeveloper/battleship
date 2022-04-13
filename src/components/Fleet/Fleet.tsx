@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { AVAILABLE_SHIPS } from "../../constants";
 import { ShipReplica } from "../ShipReplica";
 
@@ -13,13 +13,13 @@ function Fleet({ onShipSelect }: FleetProps) {
 
   const handleShipSelect = (shipName: string) => {
     setSelectedShip(shipName);
-    onShipSelect(selectedShip);
+    onShipSelect(shipName);
   };
 
   return (
     <div className="fleet">
-      <div className="fleet-title">Your Ships</div>
-      {AVAILABLE_SHIPS.map(({ name, length, placed }, i) => (
+      <h1>Your Ships</h1>
+      {AVAILABLE_SHIPS.map(({ name, length }, i) => (
         <ShipReplica
           key={name}
           name={name}

@@ -8,12 +8,7 @@
   background-color: var(--primary);
   border-radius: 3px;
   padding: 5px;
-  margin-top: var(--small-space);
   cursor: pointer;
-}
-
-.replica:hover {
-  box-shadow: 0 5px 15px rgba(30, 163, 175, 0.4);
 }
 
 .replica:active {

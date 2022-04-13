@@ -8,8 +8,6 @@ import { play, selectShip, startGame, transferGame } from "../../state/actions";
 import { WaitingScreen } from "../../components/WaitingScreen";
 
 export const Games = () => {
-  const squares = generateEmptyLayout();
-
   const {
     gameState,
     dispatch,
@@ -17,6 +15,9 @@ export const Games = () => {
     opponent,
     isDeviceTransferInProgress,
   } = useAppState();
+
+  const currentPlayerGrid = currentPlayer.grid;
+  const opponentGrid = opponent.grid;
 
   const isGameInSetupState = gameState === "SET_UP";
 
@@ -56,8 +57,13 @@ export const Games = () => {
       <div className="game-view">
         <Fleet onShipSelect={handleShipSelect} />
         <div className="boardContainer">
-          <Board squares={squares} />
+          <h1>{currentPlayer.name}</h1>
+          <Board squares={currentPlayerGrid} />
           <button onClick={handleDoneClick}>Done</button>
+        </div>
+        <div className="boardContainer">
+          <h1>{opponent.name}</h1>
+          <Board squares={opponentGrid} />
         </div>
       </div>
     </div>

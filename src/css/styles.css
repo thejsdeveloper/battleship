@@ -50,4 +50,11 @@ button {
 
 button:hover {
   opacity: 0.9;
+  box-shadow: 0 5px 15px rgba(30, 163, 175, 0.4);
+}
+
+h1 {
+  font-size: 22px;
+  text-transform: uppercase;
+  color: var(--primary);
 }

@@ -20,12 +20,12 @@ export const ShipReplica = ({
   ));
 
   return (
-    <div
+    <button
       className={isSelected ? "replica placing" : "replica"}
       onClick={() => onClick(name)}
     >
       <div className="title">{name}</div>
       <div className="tile">{shipTiles}</div>
-    </div>
+    </button>
   );
 };
