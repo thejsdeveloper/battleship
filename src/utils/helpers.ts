@@ -1,4 +1,11 @@
-import { Grid, Player, Position, Ship, SquareType } from "../state/types";
+import {
+  GameState,
+  Grid,
+  Player,
+  Position,
+  Ship,
+  SquareType,
+} from "../state/types";
 import { nanoid } from "nanoid";
 import { AVAILABLE_SHIPS, BOARD_COLUMNS, BOARD_ROWS } from "../constants";
 
@@ -116,4 +123,31 @@ export const placeInGrid = (grid: Grid, ship: Ship, type: SquareType) => {
   }
 
   return grid;
+};
+
+export const getCurrentPlayerGrid = (
+  currentPlayer: Player,
+  gameState: GameState
+): Grid => {
+  let currentPlayerGrid = currentPlayer?.grid.slice();
+  const selectedShip = currentPlayer?.fleet.selectedShip;
+
+  if (selectedShip?.position && gameState === "SET_UP") {
+    if (canPlaceShip(selectedShip, currentPlayerGrid)) {
+      currentPlayerGrid = placeInGrid(currentPlayerGrid, selectedShip, "ship");
+    } else {
+      const invalidShip = {
+        ...selectedShip,
+        length: selectedShip.length - getOverhang(selectedShip),
+      };
+
+      currentPlayerGrid = placeInGrid(
+        currentPlayerGrid,
+        invalidShip,
+        "forbidden"
+      );
+    }
+  }
+
+  return currentPlayerGrid;
 };

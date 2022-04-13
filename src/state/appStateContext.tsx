@@ -1,7 +1,12 @@
 import { createContext, Dispatch, FC, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import { getPlayerById } from "../utils/arrayUtils";
-import { canPlaceShip, getOverhang, placeInGrid } from "../utils/helpers";
+import {
+  canPlaceShip,
+  getCurrentPlayerGrid,
+  getOverhang,
+  placeInGrid,
+} from "../utils/helpers";
 
 import { Action } from "./actions";
 import { appStateReducer } from "./appStateReducer";
@@ -44,26 +49,7 @@ export const AppStateProvider: FC = (props) => {
   const currentPlayer = getPlayerById(players, currentPlayerId) || players[0];
   const opponent = getPlayerById(players, opponentId) || players[1];
 
-  let currentPlayerGrid = currentPlayer?.grid.slice();
-  const selectedShip = currentPlayer?.fleet.selectedShip;
-
-  if (selectedShip?.position && gameState === "SET_UP") {
-    if (canPlaceShip(selectedShip, currentPlayerGrid)) {
-      currentPlayerGrid = placeInGrid(currentPlayerGrid, selectedShip, "ship");
-    } else {
-      const invalidShip = {
-        ...selectedShip,
-        length: selectedShip.length - getOverhang(selectedShip),
-      };
-
-      currentPlayerGrid = placeInGrid(
-        currentPlayerGrid,
-        invalidShip,
-        "forbidden"
-      );
-    }
-  }
-
+  const currentPlayerGrid = getCurrentPlayerGrid(currentPlayer, gameState);
   const opponentGrid = opponent?.grid;
 
   return (
