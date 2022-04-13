@@ -92,20 +92,16 @@ export const Games = () => {
         {!!currentPlayerFleet.length && (
           <Fleet onShipSelect={handleShipSelect} fleet={currentPlayerFleet} />
         )}
-        <div className="boardContainer">
-          <h1>{currentPlayerName}</h1>
-          <Board
-            squares={currentPlayerGrid}
-            onHover={handleGridOnhover}
-            onSingleClick={handleGridSingleClick}
-            onDoubleClick={handleGridDoubleClick}
-          />
-          <button onClick={handleDoneClick}>Done</button>
-        </div>
-        <div className="boardContainer">
-          <h1>{opponentName}</h1>
-          <Board squares={opponentGrid} />
-        </div>
+        <Board
+          isCurrentPlayer={true}
+          playerName={currentPlayerName}
+          squares={currentPlayerGrid}
+          onHover={handleGridOnhover}
+          onSingleClick={handleGridSingleClick}
+          onDoubleClick={handleGridDoubleClick}
+          onDoneClick={handleDoneClick}
+        />
+        <Board playerName={opponentName} squares={opponentGrid} />
       </div>
     </div>
   );
