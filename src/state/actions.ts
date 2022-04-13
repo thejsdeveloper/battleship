@@ -1,4 +1,4 @@
-import { Position, ShipDirection } from "./types";
+import { Grid, Position } from "./types";
 
 export type Action =
   | {
@@ -32,6 +32,13 @@ export type Action =
       type: "ROTATE_SHIP";
       payload: {
         playerId: string;
+      };
+    }
+  | {
+      type: "PLACE_SHIP";
+      payload: {
+        playerId: string;
+        grid: Grid;
       };
     };
 
@@ -89,12 +96,12 @@ export const rotateShipDirection = (playerId: string): Action => {
   };
 };
 
-// export const placeShip = (playerId: string, position: Position): Action => {
-//   return {
-//     type: "PLACE_SHIP",
-//     payload: {
-//       playerId,
-//       position,
-//     },
-//   };
-// };
+export const placeShip = (playerId: string, grid: Grid): Action => {
+  return {
+    type: "PLACE_SHIP",
+    payload: {
+      playerId,
+      grid,
+    },
+  };
+};

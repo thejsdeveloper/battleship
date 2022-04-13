@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { AVAILABLE_SHIPS } from "../../constants";
+import { Ship } from "../../state/types";
 import { ShipReplica } from "../ShipReplica";
 
 import "./fleetStyles.css";
 
 type FleetProps = {
+  fleet: Ship[];
   onShipSelect: (shipName: string) => void;
 };
 
-function Fleet({ onShipSelect }: FleetProps) {
+function Fleet({ onShipSelect, fleet }: FleetProps) {
   const [selectedShip, setSelectedShip] = useState<string>("");
 
   const handleShipSelect = (shipName: string) => {
@@ -19,7 +21,7 @@ function Fleet({ onShipSelect }: FleetProps) {
   return (
     <div className="fleet">
       <h1>Your Ships</h1>
-      {AVAILABLE_SHIPS.map(({ name, length }, i) => (
+      {fleet.map(({ name, length }, i) => (
         <ShipReplica
           key={name}
           name={name}

@@ -4,6 +4,7 @@ import Fleet from "../../components/Fleet/Fleet";
 import { useAppState } from "../../state/appStateContext";
 import { WelcomeScreen } from "../../components/WelcomeScreen";
 import {
+  placeShip,
   play,
   rotateShipDirection,
   selectShip,
@@ -18,15 +19,20 @@ export const Games = () => {
   const {
     gameState,
     dispatch,
-    currentPlayer: {
-      name: currentPlayerName,
-      id: currentPlayerId,
-      grid: currentPlayerGrid,
-    },
+    currentPlayer,
     opponent: { name: opponentName, id: opponentId, grid: opponentGrid },
     isDeviceTransferInProgress,
     isInPlacingState,
+    isValidPlacement,
   } = useAppState();
+
+  const {
+    name: currentPlayerName,
+    id: currentPlayerId,
+    grid: currentPlayerGrid,
+  } = currentPlayer;
+
+  const currentPlayerFleet = currentPlayer?.fleet?.ships || [];
 
   const isGameInSetupState = gameState === "SET_UP";
 
@@ -57,7 +63,11 @@ export const Games = () => {
       dispatch(rotateShipDirection(currentPlayerId));
     }
   };
-  const handleGridDoubleClick = () => {};
+  const handleGridDoubleClick = () => {
+    if (isInPlacingState && isValidPlacement) {
+      dispatch(placeShip(currentPlayerId, currentPlayerGrid));
+    }
+  };
 
   if (gameState === "NONE") {
     return <WelcomeScreen onClick={handleStartGameClick} />;
@@ -77,7 +87,9 @@ export const Games = () => {
     <div className="game">
       <div className="game-title">Battleship</div>
       <div className="game-view">
-        <Fleet onShipSelect={handleShipSelect} />
+        {!!currentPlayerFleet.length && (
+          <Fleet onShipSelect={handleShipSelect} fleet={currentPlayerFleet} />
+        )}
         <div className="boardContainer">
           <h1>{currentPlayerName}</h1>
           <Board

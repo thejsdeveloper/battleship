@@ -16,3 +16,6 @@ export const findShipIndexByName = <TShip extends Ship>(
 ) => {
   return ships.findIndex((ship) => ship.name === name);
 };
+
+export const removeShip = (ships: Ship[], shipName: string) =>
+  ships.filter((ship) => ship.name !== shipName);

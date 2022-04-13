@@ -1,7 +1,7 @@
 import { createContext, Dispatch, FC, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import { getPlayerById } from "../utils/arrayUtils";
-import { getCurrentPlayerGrid } from "../utils/helpers";
+import { canPlaceShip, getCurrentPlayerGrid } from "../utils/helpers";
 
 import { Action } from "./actions";
 import { appStateReducer } from "./appStateReducer";
@@ -17,11 +17,12 @@ const appData: AppState = {
 };
 
 type AppStateContextProps = {
-  currentPlayer: Pick<Player, "name" | "id" | "grid">;
+  currentPlayer: Player;
   opponent: Pick<Player, "name" | "id" | "grid">;
   gameState: GameState;
   isDeviceTransferInProgress: boolean;
   isInPlacingState: boolean;
+  isValidPlacement: boolean;
   winner: Player | null;
   dispatch: Dispatch<Action>;
 };
@@ -48,6 +49,10 @@ export const AppStateProvider: FC = (props) => {
   const isInPlacingState =
     gameState === "SET_UP" && !!currentPlayer.fleet.selectedShip;
 
+  const isValidPlacement =
+    !!currentPlayer?.fleet.selectedShip &&
+    canPlaceShip(currentPlayer?.fleet.selectedShip, currentPlayer.grid);
+
   const currentPlayerGrid = getCurrentPlayerGrid(currentPlayer, gameState);
   const opponentGrid = opponent?.grid;
 
@@ -55,8 +60,7 @@ export const AppStateProvider: FC = (props) => {
     <AppStateContext.Provider
       value={{
         currentPlayer: {
-          name: currentPlayer?.name,
-          id: currentPlayer?.id,
+          ...currentPlayer,
           grid: currentPlayerGrid,
         },
         opponent: {
@@ -69,6 +73,7 @@ export const AppStateProvider: FC = (props) => {
         winner,
         isDeviceTransferInProgress,
         isInPlacingState,
+        isValidPlacement,
       }}
       {...props}
     />

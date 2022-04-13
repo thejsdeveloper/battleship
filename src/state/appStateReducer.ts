@@ -1,4 +1,8 @@
-import { findPlayerIndexById, findShipIndexByName } from "../utils/arrayUtils";
+import {
+  findPlayerIndexById,
+  findShipIndexByName,
+  removeShip,
+} from "../utils/arrayUtils";
 import { generatePlayers } from "../utils/helpers";
 import { Action } from "./actions";
 import { AppState } from "./types";
@@ -91,6 +95,21 @@ export const appStateReducer = (
         selectedShip.direction = selectedShip.direction === "H" ? "V" : "H";
       }
       break;
+    }
+
+    case "PLACE_SHIP": {
+      const { playerId, grid } = action.payload;
+      const currentPlayerIndex = findPlayerIndexById(draft.players, playerId);
+      const currentPlayer = draft.players[currentPlayerIndex];
+      const selectedShip = currentPlayer.fleet.selectedShip;
+      if (selectedShip !== null) {
+        currentPlayer.fleet.ships = removeShip(
+          currentPlayer.fleet.ships,
+          selectedShip.name
+        );
+      }
+      currentPlayer.grid = grid;
+      currentPlayer.fleet.selectedShip = null;
     }
   }
 };
