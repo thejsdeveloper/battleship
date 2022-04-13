@@ -157,3 +157,39 @@ export const getCurrentPlayerGrid = (
   }
   return currentPlayerGrid;
 };
+
+export const getSunkShips = (playerShots: Shot[], opponentShips: Ship[]) => {
+  const hits = playerShots.filter((shot) => shot.type === "hit");
+  const hitIndices = new Set(hits.map((hit) => coordsToIndex(hit.position)));
+  return opponentShips.filter((ship) => {
+    const shipIndices = getShipIndices(ship);
+    return shipIndices.every((index) => hitIndices.has(index));
+  });
+};
+
+export const getSunkIndices = (playerShots: Shot[], opponentShips: Ship[]) => {
+  const hits = playerShots.filter((shot) => shot.type === "hit");
+  const hitIndices = new Set(hits.map((hit) => coordsToIndex(hit.position)));
+
+  const sunkIndices = opponentShips
+    .filter((ship) => {
+      const shipIndices = getShipIndices(ship);
+      return shipIndices.every((index) => hitIndices.has(index));
+    })
+    .map((sunkShip) => getShipIndices(sunkShip))
+    .flat();
+
+  return sunkIndices;
+};
+
+export const getDoneDisabled = (
+  gameState: GameState,
+  currentPlayer: Player
+) => {
+  return (
+    (gameState === "SET_UP" &&
+      currentPlayer?.fleet?.ships.filter((ship) => ship.placed === false)
+        .length > 0) ||
+    (gameState === "IN_PROGRESS" && !(currentPlayer.state === "SHOT_TAKEN"))
+  );
+};

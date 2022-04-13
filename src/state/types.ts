@@ -16,8 +16,7 @@ export type SquareType =
   | "hit"
   | "miss"
   | "sunk"
-  | "forbidden"
-  | "awaiting";
+  | "forbidden";
 
 export type ShipDirection = "H" | "V";
 

@@ -1,10 +1,10 @@
+import { findPlayerIndexById, findShipIndexByName } from "../utils/arrayUtils";
 import {
-  findPlayerIndexById,
-  findShipIndexByName,
-  markShipAsPlaced,
-  removeShip,
-} from "../utils/arrayUtils";
-import { generatePlayers, indexToCoords, markShot } from "../utils/helpers";
+  generatePlayers,
+  getSunkShips,
+  indexToCoords,
+  markShot,
+} from "../utils/helpers";
 import { Action } from "./actions";
 import { AppState, Shot, SquareType } from "./types";
 
@@ -51,7 +51,9 @@ export const appStateReducer = (
       draft.currentPlayerId = nextPlayerId;
       draft.opponentId = currentPlayerId;
 
-      const hasNextPlayerPlacedAllShips = nextPlayer.fleet.ships.length === 0;
+      const hasNextPlayerPlacedAllShips =
+        nextPlayer.fleet.ships.filter((ship) => ship.placed === false)
+          .length === 0;
 
       if (draft.gameState === "SET_UP" && hasNextPlayerPlacedAllShips) {
         draft.gameState = "IN_PROGRESS";
@@ -146,6 +148,26 @@ export const appStateReducer = (
       opponent.grid = markShot(opponentGrid, shot);
       currentPlayer.shots.push(shot);
       currentPlayer.state = "SHOT_TAKEN";
+
+      const sunkShips = getSunkShips(currentPlayer.shots, opponent.fleet.ships);
+
+      sunkShips.forEach((ship) => {
+        const shipIndex = findShipIndexByName(opponent.fleet.ships, ship.name);
+        opponent.fleet.ships[shipIndex] = {
+          ...ship,
+          sunk: true,
+        };
+      });
+
+      /*
+      if we want to show different color for sunken ships
+      const sunkIndices = getSunkIndices(
+        currentPlayer.shots,
+        opponent.fleet.ships
+      );
+
+      sunkIndices.forEach((index) => (opponent.grid[index] = "sunk"));
+      */
 
       break;
     }

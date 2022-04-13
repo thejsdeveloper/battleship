@@ -15,6 +15,7 @@ import {
 } from "../../state/actions";
 import { WaitingScreen } from "../../components/WaitingScreen";
 import { Position } from "../../state/types";
+import { getDoneDisabled } from "../../utils/helpers";
 
 export const Games = () => {
   const {
@@ -44,9 +45,7 @@ export const Games = () => {
 
   const isShotTakenByCurrentPlayer = currentPlayer.state === "SHOT_TAKEN";
 
-  const isDoneDisabled =
-    (isGameInSetupState && currentPlayer?.fleet?.ships.length > 0) ||
-    (isGameInProgress && !isShotTakenByCurrentPlayer);
+  const isDoneDisabled = getDoneDisabled(gameState, currentPlayer);
 
   const isShootAreaDisabled =
     isGameInSetupState || (isGameInProgress && isShotTakenByCurrentPlayer);
