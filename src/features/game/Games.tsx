@@ -20,7 +20,7 @@ export const Games = () => {
     gameState,
     dispatch,
     currentPlayer,
-    opponent: { name: opponentName, id: opponentId, grid: opponentGrid },
+    opponent,
     isDeviceTransferInProgress,
     isInPlacingState,
     isValidPlacement,
@@ -31,6 +31,8 @@ export const Games = () => {
     id: currentPlayerId,
     grid: currentPlayerGrid,
   } = currentPlayer;
+
+  const { name: opponentName, id: opponentId, grid: opponentGrid } = opponent;
 
   const currentPlayerFleet = currentPlayer?.fleet?.ships || [];
 

@@ -1,6 +1,6 @@
 import { createContext, Dispatch, FC, useContext } from "react";
 import { useImmerReducer } from "use-immer";
-import { getPlayerById } from "../utils/arrayUtils";
+import { filterOutShips, getPlayerById } from "../utils/arrayUtils";
 import { canPlaceShip, getCurrentPlayerGrid } from "../utils/helpers";
 
 import { Action } from "./actions";
@@ -54,7 +54,7 @@ export const AppStateProvider: FC = (props) => {
     canPlaceShip(currentPlayer?.fleet.selectedShip, currentPlayer.grid);
 
   const currentPlayerGrid = getCurrentPlayerGrid(currentPlayer, gameState);
-  const opponentGrid = opponent?.grid;
+  const opponentGrid = filterOutShips(opponent?.grid || []);
 
   return (
     <AppStateContext.Provider
