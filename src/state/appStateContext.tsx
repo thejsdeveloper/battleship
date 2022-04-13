@@ -1,5 +1,7 @@
 import { createContext, Dispatch, FC, useContext } from "react";
 import { useImmerReducer } from "use-immer";
+import { getPlayerById } from "../utils/arrayUtils";
+import { generateEmptyLayout, placeInGrid } from "../utils/helpers";
 
 import { Action } from "./actions";
 import { appStateReducer } from "./appStateReducer";
@@ -8,8 +10,8 @@ import { AppState, GameState, Player } from "./types";
 const appData: AppState = {
   players: [],
   gameState: "NONE",
-  currentPlayerId: null,
-  opponentId: null,
+  currentPlayerId: "",
+  opponentId: "",
   winner: null,
   isDeviceTransferInProgress: false,
 };
@@ -39,12 +41,16 @@ export const AppStateProvider: FC = (props) => {
     isDeviceTransferInProgress,
   } = state;
 
-  const currentPlayer =
-    players.find((player) => player.id === currentPlayerId) || players[0];
-  const opponent =
-    players.find((player) => player.id === opponentId) || players[1];
+  const currentPlayer = getPlayerById(players, currentPlayerId) || players[0];
+  const opponent = getPlayerById(players, opponentId) || players[1];
 
-  const currentPlayerGrid = currentPlayer?.grid;
+  let currentPlayerGrid = currentPlayer?.grid.slice();
+  const selectedShip = currentPlayer?.fleet.selectedShip;
+
+  if (selectedShip?.position) {
+    currentPlayerGrid = placeInGrid(currentPlayerGrid, selectedShip, "ship");
+  }
+
   const opponentGrid = opponent?.grid;
 
   return (

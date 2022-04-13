@@ -3,8 +3,8 @@ export type PlayerState = "NONE" | "WAITING" | "READY" | "DONE" | "SHOT_TAKEN";
 
 export type AppState = {
   players: Player[];
-  currentPlayerId: string | null;
-  opponentId: string | null;
+  currentPlayerId: string;
+  opponentId: string;
   gameState: GameState;
   winner: Player | null;
   isDeviceTransferInProgress: boolean;

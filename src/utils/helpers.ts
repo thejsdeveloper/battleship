@@ -108,9 +108,11 @@ export const getOverhang = (ship: Ship) => {
   );
 };
 
-// export const placeInGrid = (grid: Grid, ship: Ship, type: SquareType) => {
-
-//   if(type === 'ship') {
-//     getShipIndices(ship).
-//   }
-// }
+export const placeInGrid = (grid: Grid, ship: Ship, type: SquareType) => {
+  if (type === "ship") {
+    getShipIndices(ship).forEach((index) => {
+      grid[index] = "ship";
+    });
+  }
+  return grid;
+};

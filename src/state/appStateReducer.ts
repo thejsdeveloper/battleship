@@ -1,11 +1,7 @@
 import { findPlayerIndexById, findShipIndexByName } from "../utils/arrayUtils";
-import {
-  canPlaceShip,
-  generatePlayers,
-  getShipIndices,
-} from "../utils/helpers";
+import { generatePlayers } from "../utils/helpers";
 import { Action } from "./actions";
-import { AppState, GameState, Player } from "./types";
+import { AppState } from "./types";
 
 export const appStateReducer = (
   draft: AppState,
@@ -74,24 +70,15 @@ export const appStateReducer = (
       break;
     }
 
-    case "PLACE_SHIP": {
+    case "UPDATE_SHIP_POSITION": {
       const { playerId, position } = action.payload;
 
       const currentPlayerIndex = findPlayerIndexById(draft.players, playerId);
       const currentPlayer = draft.players[currentPlayerIndex];
       const selectedShip = currentPlayer.fleet.selectedShip;
-      const grid = currentPlayer.grid;
-
-      if (selectedShip) {
+      if (selectedShip !== null) {
         selectedShip.position = position;
-        if (canPlaceShip(selectedShip, grid)) {
-          getShipIndices(selectedShip).forEach(
-            (index) => (grid[index] = "ship")
-          );
-        }
       }
-
-      // draft.players[currentPlayerIndex].grid = grid;
       break;
     }
   }

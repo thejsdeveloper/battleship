@@ -4,15 +4,14 @@ import Fleet from "../../components/Fleet/Fleet";
 import { useAppState } from "../../state/appStateContext";
 import { WelcomeScreen } from "../../components/WelcomeScreen";
 import {
-  placeShip,
   play,
   selectShip,
   startGame,
   transferGame,
+  updateShipPosition,
 } from "../../state/actions";
 import { WaitingScreen } from "../../components/WaitingScreen";
 import { Position } from "../../state/types";
-import { canPlaceShip, getShipIndices } from "../../utils/helpers";
 
 export const Games = () => {
   const {
@@ -47,21 +46,7 @@ export const Games = () => {
 
   const handleGridOnhover = (position: Position) => {
     if (gameState === "SET_UP") {
-      // dispatch(placeShip(currentPlayer.id, position))
-      // const currentPlayerIndex = findPlayerIndexById(draft.players, playerId);
-      // const currentPlayer = draft.players[currentPlayerIndex];
-      // const selectedShip = currentPlayer.fleet.selectedShip;
-      // const grid = currentPlayer.grid.slice();
-      // if (selectedShip) {
-      //   const ship = {
-      //     ...selectedShip,
-      //     position,
-      //   };
-      //   if (canPlaceShip(ship, currentPlayerGrid)) {
-      //     getShipIndices(ship).forEach((index) => (grid[index] = "ship"));
-      //     currentPlayerGrid = grid;
-      //   }
-      // }
+      dispatch(updateShipPosition(currentPlayerId, position));
     }
   };
 
