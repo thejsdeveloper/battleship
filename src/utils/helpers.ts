@@ -109,10 +109,11 @@ export const getOverhang = (ship: Ship) => {
 };
 
 export const placeInGrid = (grid: Grid, ship: Ship, type: SquareType) => {
-  if (type === "ship") {
+  if (type === "ship" || type === "forbidden") {
     getShipIndices(ship).forEach((index) => {
-      grid[index] = "ship";
+      grid[index] = type;
     });
   }
+
   return grid;
 };

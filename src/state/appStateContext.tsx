@@ -1,7 +1,7 @@
 import { createContext, Dispatch, FC, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import { getPlayerById } from "../utils/arrayUtils";
-import { generateEmptyLayout, placeInGrid } from "../utils/helpers";
+import { canPlaceShip, getOverhang, placeInGrid } from "../utils/helpers";
 
 import { Action } from "./actions";
 import { appStateReducer } from "./appStateReducer";
@@ -47,8 +47,21 @@ export const AppStateProvider: FC = (props) => {
   let currentPlayerGrid = currentPlayer?.grid.slice();
   const selectedShip = currentPlayer?.fleet.selectedShip;
 
-  if (selectedShip?.position) {
-    currentPlayerGrid = placeInGrid(currentPlayerGrid, selectedShip, "ship");
+  if (selectedShip?.position && gameState === "SET_UP") {
+    if (canPlaceShip(selectedShip, currentPlayerGrid)) {
+      currentPlayerGrid = placeInGrid(currentPlayerGrid, selectedShip, "ship");
+    } else {
+      const invalidShip = {
+        ...selectedShip,
+        length: selectedShip.length - getOverhang(selectedShip),
+      };
+
+      currentPlayerGrid = placeInGrid(
+        currentPlayerGrid,
+        invalidShip,
+        "forbidden"
+      );
+    }
   }
 
   const opponentGrid = opponent?.grid;
