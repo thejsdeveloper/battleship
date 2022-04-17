@@ -1,5 +1,7 @@
 # Battleship ⛴
 
+<img width="668" alt="Screenshot 2022-04-17 at 9 21 07 PM" src="https://user-images.githubusercontent.com/40167428/163716175-2e85aa3c-adee-4c7c-b33d-00c652caad14.png">
+
 Battleship is a strategy type guessing game for two players. It is played on ruled grids on which
 each player's fleet of ships (including battleships) are marked. The locations of the fleets are
 concealed from the other player. Players alternate turns calling "shots" at the other player's
@@ -21,6 +23,7 @@ original player.
 Before the game begins both players will be able to set up their map, with the
 same map viewing security as before.
 
+You can try it out [here](https://thejsdeveloper-battleship.netlify.app/)
 ## Homepage
 
 <img width="966" alt="Screenshot 2022-04-17 at 8 57 33 PM" src="https://user-images.githubusercontent.com/40167428/163715304-8a6581f7-e317-4348-9f32-4592187680a6.png">
