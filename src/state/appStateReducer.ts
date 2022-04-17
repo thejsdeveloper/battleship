@@ -1,6 +1,7 @@
 import { findPlayerIndexById, findShipIndexByName } from "../utils/arrayUtils";
 import {
   generatePlayers,
+  getSunkIndices,
   getSunkShips,
   getWinner,
   indexToCoords,
@@ -166,15 +167,12 @@ export const appStateReducer = (
         draft.gameState = "FINISH";
       }
 
-      /*
-      if we want to show different color for sunken ships
       const sunkIndices = getSunkIndices(
         currentPlayer.shots,
         opponent.fleet.ships
       );
 
       sunkIndices.forEach((index) => (opponent.grid[index] = "sunk"));
-      */
 
       break;
     }
