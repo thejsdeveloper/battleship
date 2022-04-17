@@ -10,7 +10,7 @@
 .game-title {
   font-size: 38px;
   font-weight: bold;
-  font-family: var(--regular);
+  font-family: var(--unique);
   color: var(--primary-dark);
 }
 

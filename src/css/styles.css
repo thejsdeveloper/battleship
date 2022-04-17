@@ -1,10 +1,12 @@
 @import "./colors.css";
 @import url("https://fonts.googleapis.com/css2?family=Asul&family=Chivo:wght@300;400;700;900&family=Libre+Franklin&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bangers&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
 :root {
-  --regular: "Libre Franklin", sans-serif;
-  /*  --headlines: "Asul", sans-serif;
-  --header: "Chivo", sans-serif; */
+  --regular: "Montserrat", sans-serif;
+  --unique: "Bangers", sans-serif;
+  --headlines: "Asul", sans-serif;
   --small-space: 1em;
   --medium-space: 2em;
 }
@@ -17,6 +19,7 @@ html {
 *:before,
 *:after {
   box-sizing: inherit;
+  font-family: var(--regular);
 }
 
 html,
@@ -24,41 +27,103 @@ body,
 #root {
   height: 100%;
   margin: 0;
+  background-color: #f3f3f3;
+}
+
+.splash-title {
+  font-family: var(--unique);
+  font-size: 10em;
+}
+
+.font-gradient {
+  background-image: linear-gradient(45deg, #f3ec78, #af4261);
+  background-clip: text;
+  padding-right: 20px;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .appContainer {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  background-color: #fff;
   height: 100%;
   padding: 20px;
   flex: 1;
 }
 
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.icon {
+  height: 1.2em;
+  width: 1.2em;
+  color: #fff;
+  margin-left: 0.2em;
+}
+
 button {
-  width: 170px;
-  height: 50px;
-  border-radius: 3px;
+  border-radius: 5px;
   font-family: var(--regular);
-  font-size: 16px;
-  margin: var(--small-space);
+  font-size: 1em;
+  padding: 0.5em 1em;
   border: none;
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.button-grad {
+  background-image: linear-gradient(90deg, #004b52, #43cea2, #004b52);
+  background-position: right center;
+  background-size: 200% auto;
+  transition: 0.5s;
+  box-shadow: 0 0 20px #eee;
+}
+
+.button-grad:hover {
+  background-position: left center;
+}
+
+.button {
   background-color: var(--primary);
   color: #fff;
 }
 
-button:hover {
+.button:hover {
   opacity: 0.9;
   box-shadow: 0 5px 15px rgba(30, 163, 175, 0.4);
 }
 
-button:disabled {
+.button:disabled {
   opacity: 0.5;
+}
+
+.btn-splash {
+  font-size: 1.2em;
+}
+
+.btn-icon {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 h1 {
   font-size: 22px;
   text-transform: uppercase;
   color: var(--primary);
+}
+
+.player {
+  font-size: 2em;
+  font-family: var(--unique);
+  margin: 0;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 10px;
 }

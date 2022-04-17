@@ -116,11 +116,11 @@ export const Games = () => {
 
   return (
     <div className="game">
-      <div className="game-title">Battleship</div>
+      <div className="game-title font-gradient">Battleship</div>
       <div className="game-view">
-        {!!currentPlayerFleet.length && (
+        {/* {!!currentPlayerFleet.length && (
           <Fleet onShipSelect={handleShipSelect} fleet={currentPlayerFleet} />
-        )}
+        )} */}
         <Board
           isCurrentPlayer={true}
           disableDone={isDoneDisabled}
