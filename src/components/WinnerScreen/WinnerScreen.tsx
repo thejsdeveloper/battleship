@@ -3,14 +3,14 @@ import "./winnerStyles.css";
 
 type WinnerScreenProps = {
   onReset: () => void;
-  winner: Player;
+  winner?: Player;
 };
 export const WinnerScreen = ({ onReset, winner }: WinnerScreenProps) => {
   return (
-    <div className="winnerScreen">
-      <div className="game-title">Battleship</div>
-      <h1>Winner is {winner.name} 🎉 </h1>
-      <button className="button" onClick={onReset}>
+    <div className="main">
+      <div className="splash-title font-gradient">Battleship</div>
+      <h1>Winner is Vikas 🎉 </h1>
+      <button className="button-grad btn-splash btn-icon" onClick={onReset}>
         PLAY AGAIN ?
       </button>
     </div>
