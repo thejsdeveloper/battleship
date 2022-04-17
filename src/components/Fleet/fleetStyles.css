@@ -10,3 +10,8 @@
   text-transform: uppercase;
   color: var(--primary);
 }
+
+.replica-container {
+  display: flex;
+  flex-direction: row;
+}

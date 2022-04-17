@@ -6,12 +6,9 @@ import "./boardStyles.css";
 type BoardProps = {
   playerName: string;
   squares: SquareType[];
-  isCurrentPlayer?: boolean;
-  disableDone?: boolean;
   onHover?: (position: Position) => void;
   onSingleClick?: (index: number) => void;
   onDoubleClick?: () => void;
-  onDoneClick?: () => void;
 };
 
 export const Board = ({
@@ -20,9 +17,6 @@ export const Board = ({
   onSingleClick,
   onDoubleClick,
   playerName,
-  onDoneClick,
-  isCurrentPlayer = false,
-  disableDone = true,
 }: BoardProps) => {
   const handleMouseOver = (index: number) => {
     const position = indexToCoords(index);
@@ -38,7 +32,7 @@ export const Board = ({
   };
 
   return (
-    <div className="boardContainer">
+    <div className="board-view">
       <h1>{playerName}</h1>
       <div className="board">
         {squares.map((square, index) => {
@@ -53,11 +47,6 @@ export const Board = ({
           );
         })}
       </div>
-      {isCurrentPlayer && (
-        <button onClick={onDoneClick} disabled={disableDone}>
-          Done
-        </button>
-      )}
     </div>
   );
 };

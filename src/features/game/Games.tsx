@@ -3,6 +3,8 @@ import { Board } from "../../components/Board";
 import Fleet from "../../components/Fleet/Fleet";
 import { useAppState } from "../../state/appStateContext";
 import { WelcomeScreen } from "../../components/WelcomeScreen";
+import { ReactComponent as RightArrow } from "../../assets/icons/right_arrow.svg";
+
 import {
   placeShip,
   play,
@@ -117,26 +119,35 @@ export const Games = () => {
   return (
     <div className="game">
       <div className="game-title font-gradient">Battleship</div>
-      <div className="game-view">
-        {/* {!!currentPlayerFleet.length && (
+      <main className="game-view">
+        {!!currentPlayerFleet.length && (
           <Fleet onShipSelect={handleShipSelect} fleet={currentPlayerFleet} />
-        )} */}
-        <Board
-          isCurrentPlayer={true}
-          disableDone={isDoneDisabled}
-          playerName={currentPlayerName}
-          squares={currentPlayerGrid}
-          onHover={handleGridOnhover}
-          onSingleClick={() => handleGridSingleClick()}
-          onDoubleClick={handleGridDoubleClick}
-          onDoneClick={handleDoneClick}
-        />
-        <Board
-          playerName={opponentName}
-          squares={opponentGrid}
-          onSingleClick={handleShoot}
-        />
-      </div>
+        )}
+        <div className="board-container">
+          <Board
+            playerName={currentPlayerName}
+            squares={currentPlayerGrid}
+            onHover={handleGridOnhover}
+            onSingleClick={() => handleGridSingleClick()}
+            onDoubleClick={handleGridDoubleClick}
+          />
+          <Board
+            playerName={opponentName}
+            squares={opponentGrid}
+            onSingleClick={handleShoot}
+          />
+        </div>
+        <button
+          className="button-grad btn-icon done button"
+          onClick={handleDoneClick}
+          disabled={isDoneDisabled}
+        >
+          Done
+          <div className="icon">
+            <RightArrow fill="#fff" stroke="#fff" strokeWidth={50} />
+          </div>
+        </button>
+      </main>
     </div>
   );
 };

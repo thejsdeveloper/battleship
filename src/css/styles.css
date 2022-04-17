@@ -27,7 +27,8 @@ body,
 #root {
   height: 100%;
   margin: 0;
-  background-color: #f3f3f3;
+  background: #e0eafc;
+  background: -webkit-linear-gradient(to right, #cfdef3, #e0eafc);
 }
 
 .splash-title {
@@ -45,6 +46,8 @@ body,
 
 .appContainer {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   height: 100%;
   padding: 20px;
   flex: 1;
@@ -73,7 +76,12 @@ button {
   border: none;
   text-align: center;
   text-transform: uppercase;
+  background-color: var(--primary);
   color: #fff;
+}
+
+button:disabled {
+  opacity: 0.5;
 }
 
 .button-grad {
@@ -84,11 +92,11 @@ button {
   box-shadow: 0 0 20px #eee;
 }
 
-.button-grad:hover {
+.button-grad:hover:enabled {
   background-position: left center;
 }
 
-.button {
+/* .button {
   background-color: var(--primary);
   color: #fff;
 }
@@ -96,11 +104,7 @@ button {
 .button:hover {
   opacity: 0.9;
   box-shadow: 0 5px 15px rgba(30, 163, 175, 0.4);
-}
-
-.button:disabled {
-  opacity: 0.5;
-}
+} */
 
 .btn-splash {
   font-size: 1.2em;
@@ -113,10 +117,17 @@ button {
   align-items: center;
 }
 
+.done {
+  margin-left: 1em;
+  margin-right: 2em;
+  padding: 0.8em;
+}
+
 h1 {
   font-size: 22px;
   text-transform: uppercase;
   color: var(--primary);
+  font-family: var(--headlines);
 }
 
 .player {

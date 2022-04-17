@@ -20,15 +20,17 @@ function Fleet({ onShipSelect, fleet }: FleetProps) {
   return (
     <div className="fleet">
       <h1>Your Ships</h1>
-      {fleet.map(({ name, length }, i) => (
-        <ShipReplica
-          key={name}
-          name={name}
-          length={length}
-          onClick={handleShipSelect}
-          isSelected={name === selectedShip}
-        />
-      ))}
+      <div className="replica-container">
+        {fleet.map(({ name, length }, i) => (
+          <ShipReplica
+            key={name}
+            name={name}
+            length={length}
+            onClick={handleShipSelect}
+            isSelected={name === selectedShip}
+          />
+        ))}
+      </div>
     </div>
   );
 }
