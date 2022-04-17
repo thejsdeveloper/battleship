@@ -21,6 +21,40 @@ original player.
 Before the game begins both players will be able to set up their map, with the
 same map viewing security as before.
 
+## Homepage
+
+<img width="966" alt="Screenshot 2022-04-17 at 8 57 33 PM" src="https://user-images.githubusercontent.com/40167428/163715304-8a6581f7-e317-4348-9f32-4592187680a6.png">
+
+## Wait Screen before setup of Fleet
+
+<img width="966" alt="Screenshot 2022-04-17 at 8 58 35 PM" src="https://user-images.githubusercontent.com/40167428/163715332-839ed041-e9c8-4f0a-814a-f97176c59980.png">
+
+## Player View for Fleet Setup
+
+<img width="966" alt="Screenshot 2022-04-17 at 8 59 27 PM" src="https://user-images.githubusercontent.com/40167428/163715359-747acabf-0b59-43ba-bc17-16d0b0244e2e.png">
+
+## Setting up fleet
+
+![setup](https://user-images.githubusercontent.com/40167428/163715553-3bf8cc9e-224a-4244-a033-0e53d53b5a88.gif)
+
+## Play
+
+![paly](https://user-images.githubusercontent.com/40167428/163715636-c1341627-14db-4c1a-86af-4fa8965c421e.gif)
+
+## Ship States  
+
+* Hit - Red
+* Sunk - Black
+* Miss - Grey
+
+<img width="990" alt="Screenshot 2022-04-17 at 9 07 35 PM" src="https://user-images.githubusercontent.com/40167428/163715666-1aca3c39-cd6b-40a5-9f24-4cacc38edcb3.png">
+
+## Winner 
+
+<img width="990" alt="Screenshot 2022-04-17 at 9 12 08 PM" src="https://user-images.githubusercontent.com/40167428/163715817-9b93a5de-5a35-41e0-a0c4-43bf327ff6c5.png">
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
