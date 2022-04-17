@@ -29,6 +29,10 @@ function Fleet({ onShipSelect, fleet }: FleetProps) {
           />
         ))}
       </div>
+      <div className="instructions">
+        Double click to Position the ship. Single click to rotate before you
+        position.
+      </div>
     </div>
   );
 }

@@ -102,9 +102,14 @@
   color: var(--primary);
 }
 
+.instructions {
+  color: var(--primary);
+}
+
 .replica-container {
   display: flex;
   flex-direction: row;
+  margin-bottom: 1em;
 }
 
 .replica {
