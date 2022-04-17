@@ -129,3 +129,23 @@ h1 {
   color: var(--primary);
   margin-bottom: 10px;
 }
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  .splash-title {
+    font-size: 5em;
+  }
+
+  .board-view {
+    width: 100%;
+  }
+
+  .board {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .done {
+    margin: 0;
+  }
+}
