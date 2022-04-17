@@ -55,3 +55,9 @@ export type Player = {
   shots: Shot[];
   fleet: Fleet;
 };
+
+export type DragItem = {
+  type: "SHIP";
+  playerId: string;
+  shipName: string;
+};
