@@ -1,4 +1,5 @@
 @import "./colors.css";
+@import "./game.css";
 @import url("https://fonts.googleapis.com/css2?family=Asul&family=Chivo:wght@300;400;700;900&family=Libre+Franklin&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Bangers&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
@@ -96,16 +97,6 @@ button:disabled {
   background-position: left center;
 }
 
-/* .button {
-  background-color: var(--primary);
-  color: #fff;
-}
-
-.button:hover {
-  opacity: 0.9;
-  box-shadow: 0 5px 15px rgba(30, 163, 175, 0.4);
-} */
-
 .btn-splash {
   font-size: 1.2em;
 }
@@ -128,13 +119,4 @@ h1 {
   text-transform: uppercase;
   color: var(--primary);
   font-family: var(--headlines);
-}
-
-.player {
-  font-size: 2em;
-  font-family: var(--unique);
-  margin: 0;
-  text-transform: uppercase;
-  color: var(--primary);
-  margin-bottom: 10px;
 }

@@ -1,5 +1,4 @@
 import { Player } from "../../state/types";
-import "./winnerStyles.css";
 
 type WinnerScreenProps = {
   onReset: () => void;

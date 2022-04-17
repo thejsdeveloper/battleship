@@ -2,8 +2,6 @@ import { useState } from "react";
 import { Ship } from "../../state/types";
 import { ShipReplica } from "../ShipReplica";
 
-import "./fleetStyles.css";
-
 type FleetProps = {
   fleet: Ship[];
   onShipSelect: (shipName: string) => void;

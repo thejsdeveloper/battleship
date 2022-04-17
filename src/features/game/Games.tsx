@@ -1,4 +1,3 @@
-import "./styles.css";
 import { Board } from "../../components/Board";
 import Fleet from "../../components/Fleet/Fleet";
 import { useAppState } from "../../state/appStateContext";

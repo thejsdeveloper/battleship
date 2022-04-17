@@ -1,7 +1,6 @@
 import { Position, SquareType } from "../../state/types";
 import { indexToCoords } from "../../utils/helpers";
 import { GridCell } from "../GridCell";
-import "./boardStyles.css";
 
 type BoardProps = {
   playerName: string;

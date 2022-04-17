@@ -1,6 +1,3 @@
-import React from "react";
-import "./shipReplicaStyles.css";
-
 type ShipReplicaProps = {
   name: string;
   length: number;
