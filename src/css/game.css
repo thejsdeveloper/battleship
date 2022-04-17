@@ -51,7 +51,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
 }
 
 .board .empty {
@@ -131,11 +130,6 @@
   cursor: pointer;
   margin-top: 10px;
   margin-right: 1em;
-}
-
-.replica:active {
-  position: relative;
-  top: 1px;
 }
 
 .placing {
