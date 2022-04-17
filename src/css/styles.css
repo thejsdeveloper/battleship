@@ -120,3 +120,12 @@ h1 {
   color: var(--primary);
   font-family: var(--headlines);
 }
+
+.player {
+  font-size: 2em;
+  font-family: var(--unique);
+  margin: 0;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
