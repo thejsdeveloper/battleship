@@ -5,7 +5,8 @@ import { canPlaceShip, getCurrentPlayerGrid } from "../utils/helpers";
 
 import { Action } from "./actions";
 import { appStateReducer } from "./appStateReducer";
-import { AppState, GameState, Player } from "./types";
+import { AppState, GameState } from "./types";
+import { Player } from "../models/player";
 
 const appData: AppState = {
   players: [],
@@ -43,8 +44,12 @@ export const AppStateProvider: FC = (props) => {
     isDeviceTransferInProgress,
   } = state;
 
-  const currentPlayer = getPlayerById(players, currentPlayerId) || players[0];
-  const opponent = getPlayerById(players, opponentId) || players[1];
+  const currentPlayer = !!players.length
+    ? getPlayerById(players, currentPlayerId)
+    : players[0];
+  const opponent = !!players.length
+    ? getPlayerById(players, opponentId)
+    : players[1];
 
   const isInPlacingState =
     gameState === "SET_UP" && !!currentPlayer.fleet.selectedShip;

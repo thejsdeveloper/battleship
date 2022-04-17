@@ -1,14 +1,18 @@
-import { findPlayerIndexById, findShipIndexByName } from "../utils/arrayUtils";
+import {
+  findPlayerIndexById,
+  findShipIndexByName,
+  getPlayerById,
+} from "../utils/arrayUtils";
 import {
   generatePlayers,
-  getSunkIndices,
-  getSunkShips,
+  getShot,
   getWinner,
-  indexToCoords,
   markShot,
+  updatedOpponentGrid,
+  updateOppnentShipState,
 } from "../utils/helpers";
 import { Action } from "./actions";
-import { AppState, Shot, SquareType } from "./types";
+import { AppState } from "./types";
 
 export const appStateReducer = (
   draft: AppState,
@@ -66,8 +70,7 @@ export const appStateReducer = (
     case "SELECT_SHIP": {
       const { shipName, playerId } = action.payload;
 
-      const currentPlayerIndex = findPlayerIndexById(draft.players, playerId);
-      const currentPlayer = draft.players[currentPlayerIndex];
+      const currentPlayer = getPlayerById(draft.players, playerId);
 
       const selectedShipIndex = findShipIndexByName(
         currentPlayer.fleet.ships,
@@ -82,8 +85,7 @@ export const appStateReducer = (
     case "UPDATE_SHIP_POSITION": {
       const { playerId, position } = action.payload;
 
-      const currentPlayerIndex = findPlayerIndexById(draft.players, playerId);
-      const currentPlayer = draft.players[currentPlayerIndex];
+      const currentPlayer = getPlayerById(draft.players, playerId);
       const selectedShip = currentPlayer.fleet.selectedShip;
       if (selectedShip !== null) {
         selectedShip.position = position;
@@ -93,8 +95,7 @@ export const appStateReducer = (
 
     case "ROTATE_SHIP": {
       const { playerId } = action.payload;
-      const currentPlayerIndex = findPlayerIndexById(draft.players, playerId);
-      const currentPlayer = draft.players[currentPlayerIndex];
+      const currentPlayer = getPlayerById(draft.players, playerId);
       const selectedShip = currentPlayer.fleet.selectedShip;
       if (selectedShip !== null) {
         selectedShip.direction = selectedShip.direction === "H" ? "V" : "H";
@@ -102,78 +103,46 @@ export const appStateReducer = (
       break;
     }
 
-    case "PLACE_SHIP": {
-      const { playerId, grid } = action.payload;
-      const currentPlayerIndex = findPlayerIndexById(draft.players, playerId);
-      const currentPlayer = draft.players[currentPlayerIndex];
-      const selectedShip = currentPlayer.fleet.selectedShip;
-      if (selectedShip !== null) {
-        const shipIndex = findShipIndexByName(
-          currentPlayer.fleet.ships,
-          selectedShip.name
-        );
-        currentPlayer.fleet.ships[shipIndex] = {
-          ...selectedShip,
-          placed: true,
-        };
+    case "PLACE_SHIP":
+      {
+        const { playerId, grid } = action.payload;
+        const currentPlayer = getPlayerById(draft.players, playerId);
+        const selectedShip = currentPlayer.fleet.selectedShip;
+        if (selectedShip !== null) {
+          const shipIndex = findShipIndexByName(
+            currentPlayer.fleet.ships,
+            selectedShip.name
+          );
+          currentPlayer.fleet.ships[shipIndex] = {
+            ...selectedShip,
+            placed: true,
+          };
+        }
+        currentPlayer.grid = grid;
+        currentPlayer.fleet.selectedShip = null;
       }
-      currentPlayer.grid = grid;
-      currentPlayer.fleet.selectedShip = null;
       break;
-    }
 
     case "SHOOT": {
       const { opponentId, index, currentPlayerId } = action.payload;
-      const currentPlayerIndex = findPlayerIndexById(
-        draft.players,
-        currentPlayerId
-      );
-      const currentPlayer = draft.players[currentPlayerIndex];
-
-      const opponentIndex = findPlayerIndexById(draft.players, opponentId);
-      const opponent = draft.players[opponentIndex];
+      const currentPlayer = getPlayerById(draft.players, currentPlayerId);
+      const opponent = getPlayerById(draft.players, opponentId);
 
       const opponentGrid = opponent.grid;
-      let shotType: SquareType = "empty";
-
-      if (opponentGrid[index] === "ship") {
-        shotType = "hit";
-      } else if (opponentGrid[index] === "empty") {
-        shotType = "miss";
-      }
-
-      const shot: Shot = {
-        type: shotType,
-        position: indexToCoords(index),
-      };
-
+      const shot = getShot(opponentGrid, index);
       opponent.grid = markShot(opponentGrid, shot);
+
       currentPlayer.shots.push(shot);
       currentPlayer.state = "SHOT_TAKEN";
 
-      const sunkShips = getSunkShips(currentPlayer.shots, opponent.fleet.ships);
-
-      sunkShips.forEach((ship) => {
-        const shipIndex = findShipIndexByName(opponent.fleet.ships, ship.name);
-        opponent.fleet.ships[shipIndex] = {
-          ...ship,
-          sunk: true,
-        };
-      });
+      updateOppnentShipState(currentPlayer.shots, opponent.fleet.ships);
+      updatedOpponentGrid(currentPlayer.shots, opponent);
 
       const winner = getWinner(currentPlayer, opponent);
       if (winner !== null) {
         draft.winner = winner;
         draft.gameState = "FINISH";
       }
-
-      const sunkIndices = getSunkIndices(
-        currentPlayer.shots,
-        opponent.fleet.ships
-      );
-
-      sunkIndices.forEach((index) => (opponent.grid[index] = "sunk"));
-
       break;
     }
 

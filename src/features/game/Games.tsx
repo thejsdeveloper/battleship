@@ -16,9 +16,9 @@ import {
   updateShipPosition,
 } from "../../state/actions";
 import { WaitingScreen } from "../../components/WaitingScreen";
-import { Position } from "../../state/types";
 import { getDoneDisabled } from "../../utils/helpers";
 import { WinnerScreen } from "../../components/WinnerScreen";
+import { Position } from "../../models/position";
 
 export const Games = () => {
   const {

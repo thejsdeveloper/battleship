@@ -1,4 +1,4 @@
-import { Ship } from "./state/types";
+import { Ship } from "./models/ship";
 
 export const BOARD_ROWS = 10;
 export const BOARD_COLUMNS = 10;

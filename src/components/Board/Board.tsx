@@ -1,10 +1,11 @@
-import { Position, SquareType } from "../../state/types";
+import { Cell } from "../../models/grid";
+import { Position } from "../../models/position";
 import { indexToCoords } from "../../utils/helpers";
 import { GridCell } from "../GridCell";
 
 type BoardProps = {
   playerName: string;
-  squares: SquareType[];
+  squares: Cell[];
   onHover?: (position: Position) => void;
   onSingleClick?: (index: number) => void;
   onDoubleClick?: () => void;

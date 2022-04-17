@@ -1,8 +1,8 @@
 import { useRef } from "react";
-import { SquareType } from "../../state/types";
+import { Cell } from "../../models/grid";
 
 type GridCellProps = {
-  square: SquareType;
+  square: Cell;
   onHover?: () => void;
   onDoubleClick?: () => void;
   onSingleClick?: () => void;

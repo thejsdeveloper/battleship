@@ -1,4 +1,5 @@
-import { Grid, Position } from "./types";
+import { Grid } from "../models/grid";
+import { Position } from "../models/position";
 
 export type Action =
   | {

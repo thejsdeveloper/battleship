@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Ship } from "../../state/types";
+import { Ship } from "../../models/ship";
 import { ShipReplica } from "../ShipReplica";
 
 type FleetProps = {

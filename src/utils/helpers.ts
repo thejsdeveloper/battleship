@@ -1,17 +1,15 @@
-import {
-  GameState,
-  Grid,
-  Player,
-  Position,
-  Ship,
-  Shot,
-  SquareType,
-} from "../state/types";
+import { GameState } from "../state/types";
 import { nanoid } from "nanoid";
 import { AVAILABLE_SHIPS, BOARD_COLUMNS, BOARD_ROWS } from "../constants";
+import { Cell, Grid } from "../models/grid";
+import { Player } from "../models/player";
+import { Position } from "../models/position";
+import { Ship } from "../models/ship";
+import { Shot } from "../models/shot";
+import { findShipIndexByName } from "./arrayUtils";
 
 export const generateEmptyLayout = () => {
-  return new Array<SquareType>(BOARD_ROWS * BOARD_COLUMNS).fill("empty");
+  return new Array<Cell>(BOARD_ROWS * BOARD_COLUMNS).fill("empty");
 };
 
 export const generatePlayers = (): Player[] => {
@@ -116,7 +114,7 @@ export const getOverhang = (ship: Ship) => {
   );
 };
 
-export const placeInGrid = (grid: Grid, ship: Ship, type: SquareType) => {
+export const placeInGrid = (grid: Grid, ship: Ship, type: Cell) => {
   if (type === "ship" || type === "forbidden") {
     getShipIndices(ship).forEach((index) => {
       grid[index] = type;
@@ -124,6 +122,13 @@ export const placeInGrid = (grid: Grid, ship: Ship, type: SquareType) => {
   }
 
   return grid;
+};
+
+export const getShot = (grid: Grid, index: number): Shot => {
+  return {
+    type: grid[index] === "ship" ? "hit" : "miss",
+    position: indexToCoords(index),
+  };
 };
 
 export const markShot = (grid: Grid, shot: Shot) => {
@@ -158,16 +163,7 @@ export const getCurrentPlayerGrid = (
   return currentPlayerGrid;
 };
 
-export const getSunkShips = (playerShots: Shot[], opponentShips: Ship[]) => {
-  const hits = playerShots.filter((shot) => shot.type === "hit");
-  const hitIndices = new Set(hits.map((hit) => coordsToIndex(hit.position)));
-  return opponentShips.filter((ship) => {
-    const shipIndices = getShipIndices(ship);
-    return shipIndices.every((index) => hitIndices.has(index));
-  });
-};
-
-export const getSunkIndices = (playerShots: Shot[], opponentShips: Ship[]) => {
+const getSunkIndices = (playerShots: Shot[], opponentShips: Ship[]) => {
   const hits = playerShots.filter((shot) => shot.type === "hit");
   const hitIndices = new Set(hits.map((hit) => coordsToIndex(hit.position)));
 
@@ -182,17 +178,36 @@ export const getSunkIndices = (playerShots: Shot[], opponentShips: Ship[]) => {
   return sunkIndices;
 };
 
-export const getDoneDisabled = (
-  gameState: GameState,
-  currentPlayer: Player
+const getSunkShips = (playerShots: Shot[], opponentShips: Ship[]) => {
+  const hits = playerShots.filter((shot) => shot.type === "hit");
+  const hitIndices = new Set(hits.map((hit) => coordsToIndex(hit.position)));
+  return opponentShips.filter((ship) => {
+    const shipIndices = getShipIndices(ship);
+    return shipIndices.every((index) => hitIndices.has(index));
+  });
+};
+
+export const updateOppnentShipState = (
+  currentPlayerShots: Shot[],
+  opponentShips: Ship[]
 ) => {
-  return (
-    (gameState === "SET_UP" &&
-      currentPlayer?.fleet?.ships.filter((ship) => ship.placed === false)
-        .length > 0) ||
-    (gameState === "IN_PROGRESS" && !(currentPlayer.state === "SHOT_TAKEN")) ||
-    gameState === "FINISH"
-  );
+  const sunkShips = getSunkShips(currentPlayerShots, opponentShips);
+
+  sunkShips.forEach((ship) => {
+    const shipIndex = findShipIndexByName(opponentShips, ship.name);
+    opponentShips[shipIndex] = {
+      ...ship,
+      sunk: true,
+    };
+  });
+};
+
+export const updatedOpponentGrid = (
+  currentPlayerShots: Shot[],
+  opponent: Player
+) => {
+  const sunkIndices = getSunkIndices(currentPlayerShots, opponent.fleet.ships);
+  sunkIndices.forEach((index) => (opponent.grid[index] = "sunk"));
 };
 
 export const getWinner = (
@@ -211,4 +226,17 @@ export const getWinner = (
     : isCurrentPlayerWinner
     ? currentPlayer
     : null;
+};
+
+export const getDoneDisabled = (
+  gameState: GameState,
+  currentPlayer: Player
+) => {
+  return (
+    (gameState === "SET_UP" &&
+      currentPlayer?.fleet?.ships.filter((ship) => ship.placed === false)
+        .length > 0) ||
+    (gameState === "IN_PROGRESS" && !(currentPlayer.state === "SHOT_TAKEN")) ||
+    gameState === "FINISH"
+  );
 };

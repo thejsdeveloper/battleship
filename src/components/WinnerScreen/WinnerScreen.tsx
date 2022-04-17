@@ -1,4 +1,4 @@
-import { Player } from "../../state/types";
+import { Player } from "../../models/player";
 
 type WinnerScreenProps = {
   onReset: () => void;
