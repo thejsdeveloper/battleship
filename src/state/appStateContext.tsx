@@ -44,10 +44,10 @@ export const AppStateProvider: FC = (props) => {
     isDeviceTransferInProgress,
   } = state;
 
-  const currentPlayer = !!players.length
+  const currentPlayer = !!currentPlayerId
     ? getPlayerById(players, currentPlayerId)
     : players[0];
-  const opponent = !!players.length
+  const opponent = !!opponentId
     ? getPlayerById(players, opponentId)
     : players[1];
 
