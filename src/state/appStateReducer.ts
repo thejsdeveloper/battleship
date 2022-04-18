@@ -1,8 +1,4 @@
-import {
-  findPlayerIndexById,
-  findShipIndexByName,
-  getPlayerById,
-} from "../utils/arrayUtils";
+import { findShipIndexByName } from "../utils/arrayUtils";
 import {
   generatePlayers,
   getShot,
@@ -22,40 +18,30 @@ export const appStateReducer = (
     case "START_GAME": {
       const players = generatePlayers();
       draft.players = players;
-      draft.currentPlayerId = players[0].id;
-      draft.opponentId = players[1].id;
       draft.gameState = "SET_UP";
       draft.isDeviceTransferInProgress = true;
+      draft.currentPlayerIndex = 0;
+      draft.opponentIndex = 1;
       break;
     }
 
     case "PLAY": {
-      const { currentPlayerId } = action.payload;
-      const currentPlayerIndex = findPlayerIndexById(
-        draft.players,
-        currentPlayerId
-      );
+      const { currentPlayerIndex } = action.payload;
       draft.isDeviceTransferInProgress = false;
       draft.players[currentPlayerIndex].state = "READY";
       break;
     }
 
     case "TRANSFER_DEVICE": {
-      const { currentPlayerId, nextPlayerId } = action.payload;
+      const { currentPlayerIndex, nextPlayerIndex } = action.payload;
 
-      const currentPlayerIndex = findPlayerIndexById(
-        draft.players,
-        currentPlayerId
-      );
-
-      const nextPlayerIndex = findPlayerIndexById(draft.players, nextPlayerId);
       const nextPlayer = draft.players[nextPlayerIndex];
 
       draft.players[currentPlayerIndex].state = "DONE";
       draft.players[nextPlayerIndex].state = "WAITING";
       draft.isDeviceTransferInProgress = true;
-      draft.currentPlayerId = nextPlayerId;
-      draft.opponentId = currentPlayerId;
+      draft.currentPlayerIndex = nextPlayerIndex;
+      draft.opponentIndex = currentPlayerIndex;
 
       const hasNextPlayerPlacedAllShips =
         nextPlayer.fleet.ships.filter((ship) => ship.placed === false)
@@ -68,9 +54,9 @@ export const appStateReducer = (
     }
 
     case "SELECT_SHIP": {
-      const { shipName, playerId } = action.payload;
+      const { shipName, playerIndex } = action.payload;
 
-      const currentPlayer = getPlayerById(draft.players, playerId);
+      const currentPlayer = draft.players[playerIndex];
 
       const selectedShipIndex = findShipIndexByName(
         currentPlayer.fleet.ships,
@@ -83,9 +69,9 @@ export const appStateReducer = (
     }
 
     case "UPDATE_SHIP_POSITION": {
-      const { playerId, position } = action.payload;
+      const { playerIndex, position } = action.payload;
 
-      const currentPlayer = getPlayerById(draft.players, playerId);
+      const currentPlayer = draft.players[playerIndex];
       const selectedShip = currentPlayer.fleet.selectedShip;
       if (selectedShip !== null) {
         selectedShip.position = position;
@@ -94,8 +80,8 @@ export const appStateReducer = (
     }
 
     case "ROTATE_SHIP": {
-      const { playerId } = action.payload;
-      const currentPlayer = getPlayerById(draft.players, playerId);
+      const { playerIndex } = action.payload;
+      const currentPlayer = draft.players[playerIndex];
       const selectedShip = currentPlayer.fleet.selectedShip;
       if (selectedShip !== null) {
         selectedShip.direction = selectedShip.direction === "H" ? "V" : "H";
@@ -105,8 +91,8 @@ export const appStateReducer = (
 
     case "PLACE_SHIP":
       {
-        const { playerId, grid } = action.payload;
-        const currentPlayer = getPlayerById(draft.players, playerId);
+        const { playerIndex, grid } = action.payload;
+        const currentPlayer = draft.players[playerIndex];
         const selectedShip = currentPlayer.fleet.selectedShip;
         if (selectedShip !== null) {
           const shipIndex = findShipIndexByName(
@@ -124,9 +110,9 @@ export const appStateReducer = (
       break;
 
     case "SHOOT": {
-      const { opponentId, index, currentPlayerId } = action.payload;
-      const currentPlayer = getPlayerById(draft.players, currentPlayerId);
-      const opponent = getPlayerById(draft.players, opponentId);
+      const { opponentIndex, index, currentPlayerIndex } = action.payload;
+      const currentPlayer = draft.players[currentPlayerIndex];
+      const opponent = draft.players[opponentIndex];
 
       const opponentGrid = opponent.grid;
       const shot = getShot(opponentGrid, index);
@@ -149,8 +135,8 @@ export const appStateReducer = (
     case "RESET": {
       const players = generatePlayers();
       draft.players = players;
-      draft.currentPlayerId = players[0].id;
-      draft.opponentId = players[1].id;
+      draft.currentPlayerIndex = 0;
+      draft.opponentIndex = 1;
       draft.gameState = "NONE";
       draft.isDeviceTransferInProgress = false;
       break;

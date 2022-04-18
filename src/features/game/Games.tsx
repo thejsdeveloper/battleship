@@ -30,15 +30,13 @@ export const Games = () => {
     isInPlacingState,
     isValidPlacement,
     winner,
+    currentPlayerIndex,
+    opponentIndex,
   } = useAppState();
 
-  const {
-    name: currentPlayerName,
-    id: currentPlayerId,
-    grid: currentPlayerGrid,
-  } = currentPlayer;
+  const { name: currentPlayerName, grid: currentPlayerGrid } = currentPlayer;
 
-  const { name: opponentName, id: opponentId, grid: opponentGrid } = opponent;
+  const { name: opponentName, grid: opponentGrid } = opponent;
 
   const currentPlayerFleet =
     currentPlayer?.fleet?.ships.filter((ship) => ship.placed === false) || [];
@@ -59,37 +57,37 @@ export const Games = () => {
   };
 
   const handleOnReady = () => {
-    dispatch(play(currentPlayerId));
+    dispatch(play(currentPlayerIndex));
   };
 
   const handleDoneClick = () => {
-    dispatch(transferGame(currentPlayerId, opponentId));
+    dispatch(transferGame(currentPlayerIndex, opponentIndex));
   };
 
   const handleShipSelect = (shipName: string) => {
-    dispatch(selectShip(currentPlayerId, shipName));
+    dispatch(selectShip(currentPlayerIndex, shipName));
   };
 
   const handleGridOnhover = (position: Position) => {
     if (isInPlacingState) {
-      dispatch(updateShipPosition(currentPlayerId, position));
+      dispatch(updateShipPosition(currentPlayerIndex, position));
     }
   };
 
   const handleShoot = (index: number) => {
     if (isGameInProgress && !isShootAreaDisabled) {
-      dispatch(shootTarpido(currentPlayerId, opponentId, index));
+      dispatch(shootTarpido(currentPlayerIndex, opponentIndex, index));
     }
   };
 
   const handleGridSingleClick = () => {
     if (isInPlacingState) {
-      dispatch(rotateShipDirection(currentPlayerId));
+      dispatch(rotateShipDirection(currentPlayerIndex));
     }
   };
   const handleGridDoubleClick = () => {
     if (isInPlacingState && isValidPlacement) {
-      dispatch(placeShip(currentPlayerId, currentPlayerGrid));
+      dispatch(placeShip(currentPlayerIndex, currentPlayerGrid));
     }
   };
 

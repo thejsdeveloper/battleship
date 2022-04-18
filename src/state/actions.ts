@@ -8,45 +8,45 @@ export type Action =
   | {
       type: "PLAY";
       payload: {
-        currentPlayerId: string;
+        currentPlayerIndex: number;
       };
     }
   | {
       type: "TRANSFER_DEVICE";
       payload: {
-        currentPlayerId: string;
-        nextPlayerId: string;
+        currentPlayerIndex: number;
+        nextPlayerIndex: number;
       };
     }
   | {
       type: "SELECT_SHIP";
-      payload: { shipName: string; playerId: string };
+      payload: { shipName: string; playerIndex: number };
     }
   | {
       type: "UPDATE_SHIP_POSITION";
       payload: {
-        playerId: string;
+        playerIndex: number;
         position: Position;
       };
     }
   | {
       type: "ROTATE_SHIP";
       payload: {
-        playerId: string;
+        playerIndex: number;
       };
     }
   | {
       type: "PLACE_SHIP";
       payload: {
-        playerId: string;
+        playerIndex: number;
         grid: Grid;
       };
     }
   | {
       type: "SHOOT";
       payload: {
-        currentPlayerId: string;
-        opponentId: string;
+        currentPlayerIndex: number;
+        opponentIndex: number;
         index: number;
       };
     }
@@ -60,74 +60,74 @@ export const startGame = (): Action => {
   };
 };
 
-export const play = (currentPlayerId: string): Action => {
+export const play = (currentPlayerIndex: number): Action => {
   return {
     type: "PLAY",
     payload: {
-      currentPlayerId,
+      currentPlayerIndex,
     },
   };
 };
 
 export const transferGame = (
-  currentPlayerId: string,
-  nextPlayerId: string
+  currentPlayerIndex: number,
+  nextPlayerIndex: number
 ): Action => {
   return {
     type: "TRANSFER_DEVICE",
-    payload: { currentPlayerId, nextPlayerId },
+    payload: { currentPlayerIndex, nextPlayerIndex },
   };
 };
 
-export const selectShip = (playerId: string, shipName: string): Action => {
+export const selectShip = (playerIndex: number, shipName: string): Action => {
   return {
     type: "SELECT_SHIP",
-    payload: { shipName, playerId },
+    payload: { shipName, playerIndex },
   };
 };
 
 export const updateShipPosition = (
-  playerId: string,
+  playerIndex: number,
   position: Position
 ): Action => {
   return {
     type: "UPDATE_SHIP_POSITION",
     payload: {
-      playerId,
+      playerIndex,
       position,
     },
   };
 };
 
-export const rotateShipDirection = (playerId: string): Action => {
+export const rotateShipDirection = (playerIndex: number): Action => {
   return {
     type: "ROTATE_SHIP",
     payload: {
-      playerId,
+      playerIndex,
     },
   };
 };
 
-export const placeShip = (playerId: string, grid: Grid): Action => {
+export const placeShip = (playerIndex: number, grid: Grid): Action => {
   return {
     type: "PLACE_SHIP",
     payload: {
-      playerId,
+      playerIndex,
       grid,
     },
   };
 };
 
 export const shootTarpido = (
-  currentPlayerId: string,
-  opponentId: string,
+  currentPlayerIndex: number,
+  opponentIndex: number,
   index: number
 ): Action => {
   return {
     type: "SHOOT",
     payload: {
-      currentPlayerId,
-      opponentId,
+      currentPlayerIndex,
+      opponentIndex,
       index,
     },
   };

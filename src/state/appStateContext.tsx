@@ -1,6 +1,6 @@
 import { createContext, Dispatch, FC, useContext } from "react";
 import { useImmerReducer } from "use-immer";
-import { filterOutShips, getPlayerById } from "../utils/arrayUtils";
+import { filterOutShips } from "../utils/arrayUtils";
 import { canPlaceShip, getCurrentPlayerGrid } from "../utils/helpers";
 
 import { Action } from "./actions";
@@ -11,10 +11,10 @@ import { Player } from "../models/player";
 const appData: AppState = {
   players: [],
   gameState: "NONE",
-  currentPlayerId: "",
-  opponentId: "",
   winner: null,
   isDeviceTransferInProgress: false,
+  currentPlayerIndex: 0,
+  opponentIndex: 1,
 };
 
 type AppStateContextProps = {
@@ -26,6 +26,8 @@ type AppStateContextProps = {
   isValidPlacement: boolean;
   winner: Player | null;
   dispatch: Dispatch<Action>;
+  currentPlayerIndex: number;
+  opponentIndex: number;
 };
 
 const AppStateContext = createContext<AppStateContextProps>(
@@ -37,19 +39,15 @@ export const AppStateProvider: FC = (props) => {
 
   const {
     players,
-    currentPlayerId,
-    opponentId,
     gameState,
     winner,
     isDeviceTransferInProgress,
+    currentPlayerIndex,
+    opponentIndex,
   } = state;
 
-  const currentPlayer = !!currentPlayerId
-    ? getPlayerById(players, currentPlayerId)
-    : players[0];
-  const opponent = !!opponentId
-    ? getPlayerById(players, opponentId)
-    : players[1];
+  const currentPlayer = players[currentPlayerIndex];
+  const opponent = players[opponentIndex];
 
   const isInPlacingState =
     gameState === "SET_UP" && !!currentPlayer.fleet.selectedShip;
@@ -79,6 +77,8 @@ export const AppStateProvider: FC = (props) => {
         isDeviceTransferInProgress,
         isInPlacingState,
         isValidPlacement,
+        currentPlayerIndex,
+        opponentIndex,
       }}
       {...props}
     />
